@@ -79,3 +79,11 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 **Decisione**: i contenuti normativi vivono in `content-it.ts` (riferimento) e `content-en.ts` (traduzione), stessi id verificati dai test di parità; il motore è unico e `classify(answers, locale)` produce esiti identici nelle due lingue. L'EN espone in UI e nei caveat del report la dicitura "non ancora revisionato da un professionista legale; fa fede la versione italiana".
 
 **Motivazione**: meglio un inglese utile e onestamente etichettato che un rinvio indefinito; i test di parità impediscono che le due versioni divergano strutturalmente.
+
+## D12 — Regulation Watcher: fonti ufficiali, tagging deterministico, cron Vercel (6 lug 2026)
+
+**Decisione**: il radar normativo legge tre feed RSS ufficiali verificati (EUR-Lex atti GU serie L `display-feed.rss?rssId=222`, Commissione [digital-strategy.ec.europa.eu/en/rss.xml](https://digital-strategy.ec.europa.eu/en/rss.xml), EDPB `feed/news_en`), applica **tag deterministici per parole chiave** (niente riassunti LLM: titoli e link originali) e salva su `watch_items` (lettura pubblica, scrittura solo service role). Esecuzione: **Vercel Cron** giornaliero (6:00 UTC) su `/api/watcher/run`, autenticato con `CRON_SECRET`; ogni run è tracciato in `watch_runs`. UI: digest bilingue su `/[locale]/watcher` con ISR oraria.
+
+**Motivazione**: coerenza con D4 (zero LLM finché non indispensabile: un digest di fonti primarie non richiede riassunti generati, che introdurrebbero rischio di allucinazione proprio sul contenuto normativo); il run giornaliero produce attività DB reale che mitiga la pausa del Free tier (mitigazione promessa in D3). Il tag "rilevante" (ai-act/omnibus/gpai) prepara la valutazione d'impatto per profilo azienda (Fase 3) e ci avviserà della pubblicazione dell'Omnibus in GU (D6).
+
+**Limiti accettati**: tagging keyword-based = possibili falsi negativi su titoli generici; fonti in inglese; nessuna notifica push (solo pagina) — evoluzioni in Fase 3.

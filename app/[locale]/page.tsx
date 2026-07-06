@@ -4,6 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary, isLocale, locales } from "@/lib/i18n";
 
+// Percorso del modulo per indice di card (solo per i moduli attivi).
+const moduleHrefs = ["checker", "watcher", "", "", "", ""];
+
 export default async function Home({
   params,
 }: {
@@ -74,7 +77,7 @@ export default async function Home({
           {t.modules.title}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {t.modules.items.map((m) => (
+          {t.modules.items.map((m, i) => (
             <article
               key={m.name}
               className={`rounded-xl border p-5 ${
@@ -95,9 +98,9 @@ export default async function Home({
                 >
                   {m.status}
                 </p>
-                {m.active && (
+                {m.active && moduleHrefs[i] && (
                   <Link
-                    href={`/${locale}/checker`}
+                    href={`/${locale}/${moduleHrefs[i]}`}
                     className="text-sm font-medium text-indigo-600 hover:text-indigo-800"
                   >
                     {t.modules.cta}

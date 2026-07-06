@@ -34,8 +34,8 @@
       {
         "name": "Regulation Watcher",
         "description": "Radar normativo su fonti ufficiali UE: digest periodici e valutazione d'impatto sul profilo della tua azienda.",
-        "status": "In roadmap",
-        "active": false
+        "status": "Beta online",
+        "active": true
       },
       {
         "name": "Policy-to-Controls Mapper",

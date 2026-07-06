@@ -34,8 +34,8 @@
       {
         "name": "Regulation Watcher",
         "description": "Regulatory radar on official EU sources: periodic digests and impact assessment based on your company profile.",
-        "status": "On the roadmap",
-        "active": false
+        "status": "Beta live",
+        "active": true
       },
       {
         "name": "Policy-to-Controls Mapper",

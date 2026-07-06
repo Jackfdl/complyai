@@ -12,7 +12,7 @@ Suite di strumenti AI per la compliance delle **PMI europee** — EU AI Act, con
 |------|-----------|-------|
 | 0 | Scaffold + deploy online + bilingue IT/EN | ✅ **online**: [complyai-mu.vercel.app](https://complyai-mu.vercel.app) |
 | 1 | AI Act Compliance Checker (MVP) | 🔨 **beta online** su `/it/checker` e `/en/checker` · account, salvataggio e audit log via Supabase |
-| 2 | Altri 5 moduli, uno alla volta | pianificata |
+| 2 | Altri 5 moduli, uno alla volta | 🔨 2.1 Regulation Watcher **beta online** su `/it/watcher` (digest giornaliero da EUR-Lex, Commissione, EDPB) |
 | 3 | Ruoli, audit trail, guardrail, RAG | pianificata |
 | 4 | Hardening, GDPR review, docs | pianificata |
 

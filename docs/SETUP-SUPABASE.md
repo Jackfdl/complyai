@@ -140,6 +140,57 @@ Poi rideploya (basta il prossimo `git push`, oppure Deployments → ⋯ → Rede
 2. "Le mie valutazioni" deve mostrarla; aprila, modificala, risalva.
 3. Su Supabase → **Table Editor** → `audit_log`: devi vedere `assessment.created` / `assessment.updated` con attore e timestamp. Prova a cancellare una riga di `audit_log` dal Table Editor: deve fallire con "audit_log is append-only".
 
+## 7. Regulation Watcher (Fase 2.1) — SQL aggiuntivo
+
+Nel **SQL Editor** esegui anche questo blocco:
+
+```sql
+-- ============================================================
+-- ComplyAI — Schema Fase 2.1: Regulation Watcher
+-- ============================================================
+
+create table public.watch_items (
+  id uuid primary key default gen_random_uuid(),
+  source text not null,
+  guid text not null,
+  title text not null,
+  url text not null,
+  summary text,
+  published_at timestamptz,
+  tags text[] not null default '{}',
+  relevant boolean not null default false,
+  created_at timestamptz not null default now(),
+  unique (source, guid)
+);
+
+alter table public.watch_items enable row level security;
+-- Lettura pubblica (sono notizie/atti pubblici); scrittura solo via service role (bypassa RLS).
+create policy "public read" on public.watch_items for select using (true);
+
+create table public.watch_runs (
+  id bigint generated always as identity primary key,
+  run_at timestamptz not null default now(),
+  ok boolean not null,
+  stats jsonb
+);
+
+alter table public.watch_runs enable row level security;
+create policy "public read runs" on public.watch_runs for select using (true);
+```
+
+Poi aggiungi **due variabili d'ambiente in più** (locale in `.env.local` e su Vercel):
+
+- `SUPABASE_SERVICE_ROLE_KEY` — Project Settings → API → chiave `service_role` (**segreta**: bypassa le RLS, mai esporla; su Vercel NON usare il prefisso NEXT_PUBLIC).
+- `CRON_SECRET` — una stringa casuale lunga generata da te (es. 40+ caratteri); Vercel la usa automaticamente per autenticare le chiamate del cron a `/api/watcher/run`.
+
+Il cron è definito in `vercel.json` (ogni giorno alle 6:00 UTC). Primo test manuale: dopo il deploy, da PowerShell:
+
+```powershell
+curl.exe -H "Authorization: Bearer IL-TUO-CRON-SECRET" https://complyai-mu.vercel.app/api/watcher/run
+```
+
+Deve rispondere con le statistiche delle fonti; poi `/it/watcher` mostra le voci raccolte. **Bonus**: l'esecuzione giornaliera genera attività sul DB e mitiga la pausa del piano Free.
+
 ## Note operative
 
 - **Pausa da inattività**: il progetto Free si pausa dopo ~7 giorni senza attività DB; si riattiva dal dashboard in ~1 minuto (mitigazione strutturale in Fase 2.1 col Regulation Watcher).
