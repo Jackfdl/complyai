@@ -95,3 +95,13 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 **Motivazione**: il servizio e-mail del Supabase Free ha limiti orari severi (già discusso in D10): promettere reminder e-mail oggi significherebbe romperli domani. L'export .ics delega i promemoria al calendario che l'utente usa già — zero costi, zero infrastruttura, notifiche native sul suo telefono. E-mail digest in Fase 3 con SMTP dedicato (es. free tier Resend), insieme all'aggancio automatico dal Contract Review Agent (modulo 5).
 
 **Limiti accettati**: l'.ics esportato è una fotografia (non si auto-aggiorna); niente ricorrenze; il campo categoria è testo libero (tassonomia rimandata a quando ci saranno dati reali).
+
+## D14 — Mapper: LLM via API free tier (scelta utente) con salvaguardie (7 lug 2026)
+
+**Decisione dell'utente**: analisi AI automatica via **API free tier** (opzioni proposte: euristica+copy-paste consigliata, free tier, Ollama). **Provider scelto: Mistral, piano Experiment** — azienda UE (niente trasferimenti extra-UE), ~1 mld token/mese gratuiti, endpoint OpenAI-compatibile. ⚠️ Vincolo documentato: sul piano gratuito Mistral **usa i dati per il training di default** → **opt-out obbligatorio** nel pannello privacy (passo critico nella checklist di setup, §9). Retention 30 gg per abuse-monitoring. Alternativa pronta: Groq (nessun training, zero retention di default, ma infrastruttura USA) — cambio = 3 env var (`LLM_BASE_URL/KEY/MODEL`).
+
+**Salvaguardie implementate**: (1) chiave API solo server-side, endpoint `/api/mapper/analyze` che richiede autenticazione (la quota gratuita è condivisa: niente accesso anonimo); (2) avvertenza privacy esplicita in UI: non incollare dati personali/segreti, anonimizzare prima; (3) **fallback euristico deterministico** (`segment.ts`+`heuristics.ts`, testato) sempre disponibile — anche per utenti anonimi, nel browser, senza inviare nulla a terzi; se l'LLM non risponde o restituisce JSON invalido, il fallback scatta automaticamente e viene dichiarato in UI; (4) risposta LLM validata rigidamente (schema, max 40 righe, scarto righe malformate); (5) temperatura 0 e istruzione di non inventare requisiti; ogni riga resta una bozza editabile.
+
+**Motivazione**: rispetto della scelta dell'utente minimizzandone i rischi; il fallback garantisce che il modulo non dipenda mai dalla disponibilità/quota del provider (nessuna funzione che "muore" se il free tier cambia — coerente con D2/D3).
+
+**Fonti (consultate 7 lug 2026)**: [Groq — Your Data](https://console.groq.com/docs/your-data), [Groq privacy](https://groq.com/privacy-policy), [Mistral pricing/tiers](https://mistral.ai/pricing/), [Mistral data retention](https://meetily.ai/llm-privacy/mistral).

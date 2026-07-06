@@ -258,6 +258,84 @@ create trigger deadlines_audit_delete
 
 Nessuna variabile d'ambiente nuova: lo scadenzario usa le stesse chiavi del Checker.
 
+## 9. Policy-to-Controls Mapper (Fase 2.3) — SQL + provider AI
+
+### SQL
+
+Nel **SQL Editor** esegui:
+
+```sql
+-- ============================================================
+-- ComplyAI — Schema Fase 2.3: Policy-to-Controls Mapper
+-- ============================================================
+
+create table public.control_matrices (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  title text not null default '—',
+  source_text text not null,
+  rows jsonb not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.control_matrices enable row level security;
+
+create policy "select own matrices" on public.control_matrices
+  for select using (auth.uid() = user_id);
+create policy "insert own matrices" on public.control_matrices
+  for insert with check (auth.uid() = user_id);
+create policy "update own matrices" on public.control_matrices
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "delete own matrices" on public.control_matrices
+  for delete using (auth.uid() = user_id);
+
+create or replace function public.log_matrix_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (auth.uid(), 'matrix.created', 'control_matrices', new.id::text,
+            jsonb_build_object('title', new.title, 'rows', jsonb_array_length(new.rows)));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (auth.uid(), 'matrix.updated', 'control_matrices', new.id::text,
+            jsonb_build_object('title', old.title, 'rows', jsonb_array_length(old.rows)),
+            jsonb_build_object('title', new.title, 'rows', jsonb_array_length(new.rows)));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (auth.uid(), 'matrix.deleted', 'control_matrices', old.id::text,
+            jsonb_build_object('title', old.title));
+    return old;
+  end if;
+end $$;
+
+create trigger matrices_audit_insert
+  before insert or update on public.control_matrices
+  for each row execute function public.log_matrix_change();
+
+create trigger matrices_audit_delete
+  after delete on public.control_matrices
+  for each row execute function public.log_matrix_change();
+```
+
+### Provider AI (Mistral, piano gratuito Experiment)
+
+1. Vai su [console.mistral.ai](https://console.mistral.ai) → crea account (email o Google).
+2. Scegli il piano **Experiment** (gratuito, senza carta).
+3. ⚠️ **PASSO CRITICO — opt-out dal training**: nel pannello admin → **Privacy** (o "Data & Privacy") → disattiva l'uso dei tuoi dati per l'addestramento dei modelli. Sul piano gratuito è attivo di default: senza questo opt-out, le policy analizzate potrebbero essere usate per il training. Fallo PRIMA di usare il Mapper.
+4. **API Keys** → Create new key → copia la chiave.
+5. Aggiungi tre variabili d'ambiente (in `.env.local` e su Vercel, **senza** prefisso NEXT_PUBLIC):
+   - `LLM_BASE_URL` = `https://api.mistral.ai/v1`
+   - `LLM_API_KEY` = la chiave appena creata
+   - `LLM_MODEL` = `mistral-small-latest`
+6. Redeploy. Senza queste variabili il Mapper funziona comunque in modalità euristica locale.
+
+Cambiare provider in futuro = cambiare queste 3 variabili (qualunque endpoint OpenAI-compatibile, es. Groq: `https://api.groq.com/openai/v1`).
+
 ## Note operative
 
 - **Pausa da inattività**: il progetto Free si pausa dopo ~7 giorni senza attività DB; si riattiva dal dashboard in ~1 minuto (mitigazione strutturale in Fase 2.1 col Regulation Watcher).
