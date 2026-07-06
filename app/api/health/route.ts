@@ -4,6 +4,6 @@ export function GET() {
   return Response.json({
     service: "complyai",
     status: "ok",
-    phase: 0,
+    phase: 1,
   });
 }

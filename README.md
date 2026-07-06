@@ -11,7 +11,7 @@ Suite di strumenti AI per la compliance delle **PMI europee** — EU AI Act, con
 | Fase | Contenuto | Stato |
 |------|-----------|-------|
 | 0 | Scaffold + deploy online + bilingue IT/EN | ✅ **online**: [complyai-mu.vercel.app](https://complyai-mu.vercel.app) |
-| 1 | AI Act Compliance Checker (MVP) | 🔜 prossima |
+| 1 | AI Act Compliance Checker (MVP) | 🔨 Sprint 1.1 **beta online** su `/it/checker` · Sprint 1.2 (persistenza) prossimo |
 | 2 | Altri 5 moduli, uno alla volta | pianificata |
 | 3 | Ruoli, audit trail, guardrail, RAG | pianificata |
 | 4 | Hardening, GDPR review, docs | pianificata |
@@ -37,6 +37,8 @@ Roadmap completa: [`docs/PIANO-FASI.md`](docs/PIANO-FASI.md) · Decisioni tecnic
 npm install
 npm run dev
 # apri http://localhost:3000  (redirect a /it; inglese su /en)
+
+npm test   # test del motore di classificazione del Checker (vitest)
 ```
 
 > 💡 **Windows + OneDrive**: lavora su una copia **fuori** da OneDrive (es. `C:\dev\complyai`). `node_modules` contiene decine di migliaia di file: OneDrive li sincronizza e blocca, rallentando tutto.
@@ -65,17 +67,20 @@ Ogni push su `main` rideploya automaticamente (CI minima inclusa, richiesta dall
 complyai/
 ├── app/
 │   ├── [locale]/             # route localizzate (it | en)
+│   │   ├── checker/          # modulo 1: AI Act Compliance Checker (beta)
 │   │   ├── layout.tsx        # layout root (lang dinamico, metadata localizzati)
 │   │   └── page.tsx          # landing con roadmap moduli e switch lingua
 │   ├── api/health/route.ts   # health check API
-│   └── globals.css           # Tailwind v4
+│   └── globals.css           # Tailwind v4 + stili di stampa report
 ├── lib/
+│   ├── checker/              # dominio Checker: content (citazioni), engine (regole pure), test
 │   └── i18n.ts               # locales, tipi e dizionari
 ├── messages/
 │   ├── it.json               # contenuti italiano (lingua di riferimento)
 │   └── en.json               # contenuti inglese
 ├── docs/
 │   ├── PIANO-FASI.md         # roadmap dettagliata fasi 0–4
+│   ├── FONTI-NORMATIVE.md    # fonti del Checker e stato di verifica
 │   └── DECISIONI.md          # registro decisioni (ADR)
 ├── next.config.ts            # redirect / → /it
 ├── postcss.config.mjs

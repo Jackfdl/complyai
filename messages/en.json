@@ -12,15 +12,23 @@
     "kicker": "EU AI Act · GDPR · Contracts",
     "title": "Regulatory compliance, within every SME's reach.",
     "subtitle": "An open suite of AI tools, built in public, to understand which obligations apply to your company, close the gaps and document every decision — with no entry cost.",
-    "status": "Phase 0 complete: platform online. The first module is under development."
+    "status": "Phase 1 underway: the AI Act Checker is live in beta."
+  },
+  "checker": {
+    "metaTitle": "AI Act Compliance Checker — ComplyAI",
+    "metaDescription": "Classify your AI systems under the EU AI Act (updated to the 2026 Omnibus): guided questionnaire, applicable obligations, gaps and action plan. Free, no sign-up.",
+    "noticeTitle": "The Checker is currently available in Italian",
+    "noticeBody": "The guided questionnaire and the regulatory content have been drafted and verified in Italian first. A reviewed English version is on the roadmap. The tool is free and requires no sign-up.",
+    "noticeCta": "Open the Italian version"
   },
   "modules": {
     "title": "The six modules of the suite",
+    "cta": "Try the beta →",
     "items": [
       {
         "name": "AI Act Compliance Checker",
         "description": "Classifies the risk of your AI systems under the EU AI Act and generates obligation checklists, gaps and an action plan.",
-        "status": "Phase 1 — in development",
+        "status": "Beta live",
         "active": true
       },
       {

@@ -87,13 +87,23 @@ export default async function Home({
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 {m.description}
               </p>
-              <p
-                className={`mt-4 text-xs font-medium ${
-                  m.active ? "text-indigo-700" : "text-slate-400"
-                }`}
-              >
-                {m.status}
-              </p>
+              <div className="mt-4 flex items-center justify-between">
+                <p
+                  className={`text-xs font-medium ${
+                    m.active ? "text-indigo-700" : "text-slate-400"
+                  }`}
+                >
+                  {m.status}
+                </p>
+                {m.active && (
+                  <Link
+                    href={`/${locale}/checker`}
+                    className="text-sm font-medium text-indigo-600 hover:text-indigo-800"
+                  >
+                    {t.modules.cta}
+                  </Link>
+                )}
+              </div>
             </article>
           ))}
         </div>

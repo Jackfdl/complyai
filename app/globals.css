@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+/* Report del Checker: stampa pulita (Stampa / salva PDF) */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  #report {
+    padding: 0;
+  }
+}

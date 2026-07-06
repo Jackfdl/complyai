@@ -57,3 +57,11 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 **Decisione**: il repo di lavoro è `C:\dev\...\complyai` (montato nella sessione Cowork). L'agente modifica i file e verifica la build in sandbox; l'utente rivede in locale (`npm run dev`), poi esegue **commit e push** (deploy automatico Vercel). L'agente non committa: la storia git resta interamente dell'utente.
 
 **Nota**: la copia su OneDrive è dismessa (file segnaposto lasciato in loco). Identità git globale configurata (`Jackfdl` / email personale); il primo commit porta l'email istituzionale auto-rilevata — fix opzionale documentato in chat. Connector Vercel attivo per monitoraggio deploy e log.
+
+## D9 — Checker: contenuti normativi versionati e "date-flag" Omnibus (6 lug 2026)
+
+**Decisione**: i contenuti normativi vivono in `lib/checker/content.ts` con `CONTENT_VERSION` esplicita, citazione puntuale per ogni voce e flag `pendingOmnibus` sulle date/regole che derivano dall'Omnibus non ancora in GU. Il motore (`engine.ts`) è a funzioni pure e coperto da test (`engine.test.ts`), che fissano i comportamenti normativi critici: divieti che prevalgono su tutto, profilazione che annulla la deroga 6(3), trasparenza che si somma senza abbassare l'alto rischio, differenziazione obblighi provider/deployer.
+
+**Motivazione**: in materia legale la riproducibilità vale più della brillantezza: stessa domanda → stessa risposta → stessa citazione. I test rendono le regole falsificabili e ogni futura modifica dei contenuti verificabile. Il flag Omnibus evita l'errore più insidioso del momento: presentare come vigenti date che vincolano solo dopo la pubblicazione in GU.
+
+**Limiti accettati (v0.1.0-beta)**: eccezioni art. 5 e confini art. 6(3) trattati con note prudenziali; GPAI solo come rinvio; EN non ancora tradotto (avviso onesto su /en/checker). Revisione legale professionale prima dell'uscita dalla beta — elencato in `FONTI-NORMATIVE.md`.

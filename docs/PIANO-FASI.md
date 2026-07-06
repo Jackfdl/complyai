@@ -47,7 +47,7 @@ Contenuto:
 Fuori scope Fase 1: upload/analisi PDF di policy (richiede LLM → Fase 2), ruoli avanzati, RAG.
 
 **Sprint interni** (ognuno deployato):
-- **Sprint 1.1 — Checker anonimo**: wizard + motore a regole + pagina risultati + report stampabile/salvabile. Nessun account richiesto (zero attrito per le PMI), nessun dato persistito lato server. UI bilingue da subito; contenuti normativi prima in IT, EN a seguire.
+- **Sprint 1.1 — Checker anonimo** ✅ (6 lug 2026): wizard 7 passi + motore a regole deterministico testato (vitest) + report stampabile/JSON. Nessun account, nessun dato lato server. Contenuti normativi IT v0.1.0-beta aggiornati all'Omnibus (fonti e limiti in `FONTI-NORMATIVE.md`); su /en avviso onesto con rimando alla versione italiana.
 - **Sprint 1.2 — Persistenza**: Supabase (auth email, salvataggio assessment, `audit_log` append-only), dashboard "i miei assessment", export.
 
 **Exit criteria**: una PMI reale può completare il questionario online e scaricare un report corretto e citato.

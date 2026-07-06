@@ -12,15 +12,23 @@
     "kicker": "EU AI Act · GDPR · Contratti",
     "title": "La compliance normativa, alla portata delle PMI.",
     "subtitle": "Una suite di strumenti AI, aperta e in costruzione pubblica, per capire quali obblighi si applicano alla tua azienda, colmare i gap e documentare ogni decisione — senza costi di ingresso.",
-    "status": "Fase 0 completata: piattaforma online. Il primo modulo è in sviluppo."
+    "status": "Fase 1 in corso: l'AI Act Checker è online in versione beta."
+  },
+  "checker": {
+    "metaTitle": "AI Act Compliance Checker — ComplyAI",
+    "metaDescription": "Classifica il rischio dei tuoi sistemi AI secondo l'EU AI Act (aggiornato all'Omnibus 2026): questionario guidato, obblighi applicabili, gap e piano d'azione. Gratuito, senza registrazione.",
+    "noticeTitle": "The Checker is currently available in Italian",
+    "noticeBody": "The guided questionnaire and the regulatory content have been drafted and verified in Italian first. A reviewed English version is on the roadmap. The tool is free and requires no sign-up.",
+    "noticeCta": "Open the Italian version"
   },
   "modules": {
     "title": "I sei moduli della suite",
+    "cta": "Prova la beta →",
     "items": [
       {
         "name": "AI Act Compliance Checker",
         "description": "Classifica il rischio dei tuoi sistemi AI secondo l'EU AI Act e genera checklist di obblighi, gap e piano d'azione.",
-        "status": "Fase 1 — in sviluppo",
+        "status": "Beta online",
         "active": true
       },
       {
