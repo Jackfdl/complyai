@@ -1,0 +1,19 @@
+# Dipendenze
+/node_modules
+
+# Build Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Ambiente e segreti (mai nel repo)
+.env
+.env.*
+
+# Vercel
+.vercel
+
+# Sistema
+.DS_Store
+Thumbs.db
