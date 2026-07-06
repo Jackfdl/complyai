@@ -65,3 +65,17 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 **Motivazione**: in materia legale la riproducibilità vale più della brillantezza: stessa domanda → stessa risposta → stessa citazione. I test rendono le regole falsificabili e ogni futura modifica dei contenuti verificabile. Il flag Omnibus evita l'errore più insidioso del momento: presentare come vigenti date che vincolano solo dopo la pubblicazione in GU.
 
 **Limiti accettati (v0.1.0-beta)**: eccezioni art. 5 e confini art. 6(3) trattati con note prudenziali; GPAI solo come rinvio; EN non ancora tradotto (avviso onesto su /en/checker). Revisione legale professionale prima dell'uscita dalla beta — elencato in `FONTI-NORMATIVE.md`.
+
+## D10 — Persistenza e audit trail: Supabase + RLS + trigger DB (6 lug 2026)
+
+**Decisione**: salvataggio degli assessment direttamente dal browser su Supabase (anon key pubblica by design), con sicurezza interamente lato database: RLS per-utente su `assessments` e `audit_log`; `audit_log` **append-only** tramite tre livelli (nessuna policy update/delete, `REVOKE`, trigger che solleva eccezione); audit automatico via trigger su insert/update/delete di `assessments` — il client non può aggirarlo né dimenticarlo. Regione **eu-central-1** (GDPR). Auth email+password con conferma email disattivata in beta (il servizio email del Free tier ha limiti orari; SMTP dedicato in Fase 4). Degradazione elegante: senza env var l'app resta pienamente usabile in modalità anonima.
+
+**Motivazione**: niente backend proprio da mantenere (D2), sicurezza dichiarativa verificabile nello schema SQL (`docs/SETUP-SUPABASE.md`), e l'audit trail nasce come vincolo infrastrutturale — fondamenta reali del modulo 4 (Audit Trail Builder). Dati minimi by design: email account + payload assessment, nient'altro.
+
+**Alternative scartate**: API route + service key (più codice e segreti server-side senza benefici a questo stadio); magic link (rate limit email del Free tier lo rende inaffidabile per una beta pubblica).
+
+## D11 — Checker bilingue: EN pubblicato con caveat di revisione (6 lug 2026)
+
+**Decisione**: i contenuti normativi vivono in `content-it.ts` (riferimento) e `content-en.ts` (traduzione), stessi id verificati dai test di parità; il motore è unico e `classify(answers, locale)` produce esiti identici nelle due lingue. L'EN espone in UI e nei caveat del report la dicitura "non ancora revisionato da un professionista legale; fa fede la versione italiana".
+
+**Motivazione**: meglio un inglese utile e onestamente etichettato che un rinvio indefinito; i test di parità impediscono che le due versioni divergano strutturalmente.

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { classify, isArt63ExemptionValid } from "./engine";
+import { classify, isArt63ExemptionValid } from "./classify";
+import { getContent } from "./packs";
 import type { CheckerAnswers } from "./types";
 
 const base: CheckerAnswers = {
@@ -16,6 +17,52 @@ const base: CheckerAnswers = {
   gpai: false,
 };
 
+describe("parità IT/EN dei pacchetti di contenuto", () => {
+  const it_ = getContent("it");
+  const en = getContent("en");
+  const ids = (a: { id: string }[]) => a.map((x) => x.id).sort();
+
+  it("stessi id per pratiche, aree, deroghe, trasparenza e obblighi", () => {
+    expect(ids(en.prohibitedPractices)).toEqual(ids(it_.prohibitedPractices));
+    expect(ids(en.annexIIIAreas)).toEqual(ids(it_.annexIIIAreas));
+    expect(ids(en.art63Exemptions)).toEqual(ids(it_.art63Exemptions));
+    expect(ids(en.transparencyFlags)).toEqual(ids(it_.transparencyFlags));
+    expect(ids(en.highRiskProvider)).toEqual(ids(it_.highRiskProvider));
+    expect(ids(en.highRiskDeployer)).toEqual(ids(it_.highRiskDeployer));
+    expect(ids(en.baseline)).toEqual(ids(it_.baseline));
+  });
+
+  it("stesse date chiave nelle due lingue (2 dic 2027, 2 ago 2026, 2 ago 2028)", () => {
+    expect(it_.strings.dlAnnex3.date).toMatch(/2 dic 2027/);
+    expect(en.strings.dlAnnex3.date).toMatch(/2 Dec 2027/);
+    expect(it_.strings.dlArt50.date).toMatch(/2 ago 2026/);
+    expect(en.strings.dlArt50.date).toMatch(/2 Aug 2026/);
+    expect(it_.strings.dlAnnex1.date).toMatch(/2 ago 2028/);
+    expect(en.strings.dlAnnex1.date).toMatch(/2 Aug 2028/);
+  });
+
+  it("stessa classificazione nelle due lingue a parità di risposte", () => {
+    const answers: CheckerAnswers = {
+      ...base,
+      annexIIIAreas: ["employment"],
+      transparencyFlags: ["chatbot"],
+    };
+    const rIt = classify(answers, "it");
+    const rEn = classify(answers, "en");
+    expect(rEn.level).toBe(rIt.level);
+    expect(rEn.obligations.map((o) => o.id).sort()).toEqual(
+      rIt.obligations.map((o) => o.id).sort()
+    );
+  });
+
+  it("l'inglese porta il caveat di revisione, l'italiano no", () => {
+    const rEn = classify(base, "en");
+    const rIt = classify(base, "it");
+    expect(rEn.caveats.join(" ")).toMatch(/not yet been reviewed/);
+    expect(rIt.caveats.join(" ")).not.toMatch(/not yet been reviewed/);
+  });
+});
+
 describe("classify — pratiche vietate", () => {
   it("una pratica art. 5 produce esito 'prohibited' e prevale su tutto", () => {
     const r = classify({
@@ -26,7 +73,6 @@ describe("classify — pratiche vietate", () => {
     });
     expect(r.level).toBe("prohibited");
     expect(r.findings.some((f) => f.ref.includes("5(1)(f)"))).toBe(true);
-    // niente obblighi alto rischio in un esito vietato
     expect(r.obligations.some((o) => o.id.startsWith("hr-"))).toBe(false);
   });
 
@@ -89,7 +135,7 @@ describe("classify — deroga art. 6(3)", () => {
       profiling: true,
     });
     expect(r.level).toBe("high");
-    expect(r.findings.some((f) => f.title.includes("profilazione"))).toBe(true);
+    expect(r.findings.some((f) => f.kind === "high-annex3" && f.ref.includes("6(3)"))).toBe(true);
   });
 });
 

@@ -48,7 +48,7 @@ Fuori scope Fase 1: upload/analisi PDF di policy (richiede LLM → Fase 2), ruol
 
 **Sprint interni** (ognuno deployato):
 - **Sprint 1.1 — Checker anonimo** ✅ (6 lug 2026): wizard 7 passi + motore a regole deterministico testato (vitest) + report stampabile/JSON. Nessun account, nessun dato lato server. Contenuti normativi IT v0.1.0-beta aggiornati all'Omnibus (fonti e limiti in `FONTI-NORMATIVE.md`); su /en avviso onesto con rimando alla versione italiana.
-- **Sprint 1.2 — Persistenza**: Supabase (auth email, salvataggio assessment, `audit_log` append-only), dashboard "i miei assessment", export.
+- **Sprint 1.2 — Persistenza + EN** ✅ (6 lug 2026, in attesa di config Supabase utente): Supabase con RLS per-utente, salvataggio/aggiornamento assessment, `audit_log` append-only con trigger DB automatici (revoke + trigger di immutabilità), dashboard "Le mie valutazioni", auth email+password senza conferma (beta). Checker tradotto in EN (stessi id, caveat di revisione) — `/en/checker` ora serve il wizard vero. Setup: `docs/SETUP-SUPABASE.md`.
 
 **Exit criteria**: una PMI reale può completare il questionario online e scaricare un report corretto e citato.
 

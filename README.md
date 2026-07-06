@@ -11,7 +11,7 @@ Suite di strumenti AI per la compliance delle **PMI europee** — EU AI Act, con
 | Fase | Contenuto | Stato |
 |------|-----------|-------|
 | 0 | Scaffold + deploy online + bilingue IT/EN | ✅ **online**: [complyai-mu.vercel.app](https://complyai-mu.vercel.app) |
-| 1 | AI Act Compliance Checker (MVP) | 🔨 Sprint 1.1 **beta online** su `/it/checker` · Sprint 1.2 (persistenza) prossimo |
+| 1 | AI Act Compliance Checker (MVP) | 🔨 **beta online** su `/it/checker` e `/en/checker` · account, salvataggio e audit log via Supabase |
 | 2 | Altri 5 moduli, uno alla volta | pianificata |
 | 3 | Ruoli, audit trail, guardrail, RAG | pianificata |
 | 4 | Hardening, GDPR review, docs | pianificata |
@@ -40,6 +40,10 @@ npm run dev
 
 npm test   # test del motore di classificazione del Checker (vitest)
 ```
+
+### Variabili d'ambiente (facoltative in sviluppo)
+
+Senza configurazione l'app funziona in modalità anonima (nessun salvataggio). Per abilitare account e salvataggi: copia `.env.local.example` in `.env.local` e segui [`docs/SETUP-SUPABASE.md`](docs/SETUP-SUPABASE.md).
 
 > 💡 **Windows + OneDrive**: lavora su una copia **fuori** da OneDrive (es. `C:\dev\complyai`). `node_modules` contiene decine di migliaia di file: OneDrive li sincronizza e blocca, rallentando tutto.
 

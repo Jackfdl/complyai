@@ -1,6 +1,6 @@
 # Fonti normative del Checker — stato di verifica
 
-Contenuti: `lib/checker/content.ts` · Versione: **v0.1.0-beta (6 luglio 2026)**
+Contenuti: `lib/checker/content-it.ts` (riferimento) e `content-en.ts` (traduzione) · Versione: **v0.2.0-beta (6 luglio 2026)**
 
 Questo file traccia da dove viene ogni affermazione normativa del Checker e con quale grado di certezza. Va aggiornato ad ogni revisione dei contenuti (e automaticamente sorvegliato dal modulo Regulation Watcher, Fase 2.1).
 
@@ -38,5 +38,5 @@ Iter: proposta Commissione 19 nov 2025 → accordo provvisorio trilogo 7 mag 202
 1. Le sintesi di articoli/allegati sono **semplificazioni divulgative**: fanno fede i testi ufficiali.
 2. Le eccezioni all'art. 5 (es. RBI per law enforcement) e i confini fini dell'art. 6(3) sono trattati con note prudenziali, non modellati in dettaglio.
 3. Obblighi GPAI: solo rinvio informativo (artt. 51–56), non checklist operativa.
-4. Contenuti in italiano; versione inglese non ancora revisionata.
+4. Versione inglese tradotta ma **non ancora revisionata da un professionista legale**: fa fede l'italiano (caveat mostrato in UI e nel report EN).
 5. **Revisione legale professionale raccomandata prima di promuovere il tool fuori beta.**
