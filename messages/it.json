@@ -12,7 +12,7 @@
     "kicker": "EU AI Act · GDPR · Contratti",
     "title": "La compliance normativa, alla portata delle PMI.",
     "subtitle": "Una suite di strumenti AI, aperta e in costruzione pubblica, per capire quali obblighi si applicano alla tua azienda, colmare i gap e documentare ogni decisione — senza costi di ingresso.",
-    "status": "Fase 1 in corso: l'AI Act Checker è online in versione beta."
+    "status": "Tre moduli online in beta: AI Act Checker, Radar normativo, Scadenzario legale."
   },
   "checker": {
     "metaTitle": "AI Act Compliance Checker — ComplyAI",
@@ -58,8 +58,8 @@
       {
         "name": "Legal Deadline Tracker",
         "description": "Scadenzario di obblighi, rinnovi e finestre di recesso con reminder e stato di avanzamento.",
-        "status": "In roadmap",
-        "active": false
+        "status": "Beta online",
+        "active": true
       }
     ]
   },

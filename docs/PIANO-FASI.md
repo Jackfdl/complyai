@@ -59,7 +59,7 @@ Ordine proposto (complessità crescente, ogni modulo deployato prima del success
 | # | Modulo | Perché in questa posizione |
 |---|--------|---------------------------|
 | 2.1 | **Regulation Watcher** ✅ (6 lug 2026) | Feed verificati: EUR-Lex GU serie L, Commissione/AI Office, EDPB. Cron Vercel giornaliero → `/api/watcher/run` (CRON_SECRET) → tagging deterministico per keyword → digest pubblico su `/[locale]/watcher`. Il run giornaliero tiene attivo il DB Supabase. Valutazione d'impatto per profilo azienda: rimandata (richiede profili, Fase 3) |
-| 2.2 | **Legal Deadline Tracker** | CRUD + calendario + reminder; inserimento manuale, predisposto a ricevere dati dal modulo 5 |
+| 2.2 | **Legal Deadline Tracker** ✅ (6 lug 2026) | Scadenzario per-utente su `/[locale]/deadlines`: stati automatici (in ritardo / entro 30 gg / future / completate), export **.ics** per Google/Outlook/Apple Calendar, audit automatico via trigger DB. Reminder e-mail rimandati a Fase 3 (limiti SMTP free tier, D13); si aggancerà al modulo 5 |
 | 2.3 | **Policy-to-Controls Mapper** | Prima vera esigenza LLM (scomposizione testo in control statement) → qui si decide l'opzione a costo zero (Ollama locale / free tier API, con conferma esplicita costi) |
 | 2.4 | **Contract Review Agent** | Il più complesso: parsing PDF/DOCX + libreria clausole + RAG (pgvector); alimenta il Deadline Tracker |
 

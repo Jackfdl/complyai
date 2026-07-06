@@ -87,3 +87,11 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 **Motivazione**: coerenza con D4 (zero LLM finché non indispensabile: un digest di fonti primarie non richiede riassunti generati, che introdurrebbero rischio di allucinazione proprio sul contenuto normativo); il run giornaliero produce attività DB reale che mitiga la pausa del Free tier (mitigazione promessa in D3). Il tag "rilevante" (ai-act/omnibus/gpai) prepara la valutazione d'impatto per profilo azienda (Fase 3) e ci avviserà della pubblicazione dell'Omnibus in GU (D6).
 
 **Limiti accettati**: tagging keyword-based = possibili falsi negativi su titoli generici; fonti in inglese; nessuna notifica push (solo pagina) — evoluzioni in Fase 3.
+
+## D13 — Deadline Tracker: reminder senza e-mail, export .ics (6 lug 2026)
+
+**Decisione**: il modulo 6 (Legal Deadline Tracker) parte come scadenzario per-utente con **stati calcolati deterministicamente** dalla data (in ritardo / entro 30 giorni / future / completate — `lib/deadlines/logic.ts`, testato) e **export iCalendar (.ics)** generato client-side, importabile in qualunque calendario. Niente reminder e-mail in beta. Date gestite come stringhe `YYYY-MM-DD` con confronti lessicografici (immuni ai fusi orari). Stessa infrastruttura di D10: RLS per-utente, audit automatico via trigger DB (`deadline.created/updated/deleted`).
+
+**Motivazione**: il servizio e-mail del Supabase Free ha limiti orari severi (già discusso in D10): promettere reminder e-mail oggi significherebbe romperli domani. L'export .ics delega i promemoria al calendario che l'utente usa già — zero costi, zero infrastruttura, notifiche native sul suo telefono. E-mail digest in Fase 3 con SMTP dedicato (es. free tier Resend), insieme all'aggancio automatico dal Contract Review Agent (modulo 5).
+
+**Limiti accettati**: l'.ics esportato è una fotografia (non si auto-aggiorna); niente ricorrenze; il campo categoria è testo libero (tassonomia rimandata a quando ci saranno dati reali).

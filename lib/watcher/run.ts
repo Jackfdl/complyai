@@ -30,6 +30,8 @@ export async function runWatcher(admin: SupabaseClient): Promise<RunStats> {
       const items = parseFeed(xml).slice(0, 50); // prudenza: max 50 per run/fonte
 
       let inserted = 0;
+      let insertErrors = 0;
+      let firstError: string | undefined;
       for (const item of items) {
         const tags = tagItem(item.title, item.summary);
         // upsert con ignoreDuplicates: il vincolo unique su (source, guid) deduplica
@@ -49,9 +51,22 @@ export async function runWatcher(admin: SupabaseClient): Promise<RunStats> {
             { onConflict: "source,guid", ignoreDuplicates: true }
           )
           .select("id");
-        if (!error && data && data.length > 0) inserted += 1;
+        if (error) {
+          // Gli errori di insert non devono passare sotto silenzio (lezione del primo run).
+          insertErrors += 1;
+          firstError ??= error.message;
+        } else if (data && data.length > 0) {
+          inserted += 1;
+        }
       }
-      stats.push({ id: source.id, fetched: items.length, inserted });
+      stats.push({
+        id: source.id,
+        fetched: items.length,
+        inserted,
+        ...(insertErrors > 0
+          ? { error: `${insertErrors} insert falliti — primo errore: ${firstError}` }
+          : {}),
+      });
     } catch (e) {
       stats.push({
         id: source.id,

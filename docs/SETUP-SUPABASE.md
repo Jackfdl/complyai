@@ -191,6 +191,73 @@ curl.exe -H "Authorization: Bearer IL-TUO-CRON-SECRET" https://complyai-mu.verce
 
 Deve rispondere con le statistiche delle fonti; poi `/it/watcher` mostra le voci raccolte. **Bonus**: l'esecuzione giornaliera genera attività sul DB e mitiga la pausa del piano Free.
 
+## 8. Legal Deadline Tracker (Fase 2.2) — SQL aggiuntivo
+
+Nel **SQL Editor** esegui anche questo blocco:
+
+```sql
+-- ============================================================
+-- ComplyAI — Schema Fase 2.2: Legal Deadline Tracker
+-- ============================================================
+
+create table public.deadlines (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  title text not null,
+  notes text,
+  category text,
+  due_date date not null,
+  completed_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.deadlines enable row level security;
+
+create policy "select own deadlines" on public.deadlines
+  for select using (auth.uid() = user_id);
+create policy "insert own deadlines" on public.deadlines
+  for insert with check (auth.uid() = user_id);
+create policy "update own deadlines" on public.deadlines
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "delete own deadlines" on public.deadlines
+  for delete using (auth.uid() = user_id);
+
+-- Audit automatico anche per lo scadenzario (stesso schema di assessments)
+create or replace function public.log_deadline_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (auth.uid(), 'deadline.created', 'deadlines', new.id::text,
+            jsonb_build_object('title', new.title, 'due_date', new.due_date));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (auth.uid(), 'deadline.updated', 'deadlines', new.id::text,
+            jsonb_build_object('title', old.title, 'due_date', old.due_date, 'completed_at', old.completed_at),
+            jsonb_build_object('title', new.title, 'due_date', new.due_date, 'completed_at', new.completed_at));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (auth.uid(), 'deadline.deleted', 'deadlines', old.id::text,
+            jsonb_build_object('title', old.title, 'due_date', old.due_date));
+    return old;
+  end if;
+end $$;
+
+create trigger deadlines_audit_insert
+  before insert or update on public.deadlines
+  for each row execute function public.log_deadline_change();
+
+create trigger deadlines_audit_delete
+  after delete on public.deadlines
+  for each row execute function public.log_deadline_change();
+```
+
+Nessuna variabile d'ambiente nuova: lo scadenzario usa le stesse chiavi del Checker.
+
 ## Note operative
 
 - **Pausa da inattività**: il progetto Free si pausa dopo ~7 giorni senza attività DB; si riattiva dal dashboard in ~1 minuto (mitigazione strutturale in Fase 2.1 col Regulation Watcher).
