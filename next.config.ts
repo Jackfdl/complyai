@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
-/** Configurazione Next.js — volutamente minimale in Fase 0. */
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // La root reindirizza alla lingua predefinita (IT). EN disponibile su /en.
+      { source: "/", destination: "/it", permanent: false },
+    ];
+  },
+};
 
 export default nextConfig;

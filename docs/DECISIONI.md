@@ -10,6 +10,8 @@ Formato: decisione, motivazione, alternative scartate, rischi/caveat. Aggiornato
 
 **Azione richiesta prima del lancio pubblico**: ricerca su [tmview (EUIPO)](https://www.tmdn.org/tmview/) classi Nizza 9/42/45 + verifica domini. Rinominare in Fase 0–1 costa minuti; dopo, molto di più. Alternative già vagliate e libere da collisioni note: **NormaChiara**, **Cardine**.
 
+**Aggiornamento 6 lug 2026**: nome riconfermato dall'utente come working title, con dichiarata ambizione internazionale → interfaccia bilingue IT/EN (vedi D7). Il caveat marchio resta aperto.
+
 ## D2 — Architettura: Next.js full-stack su Vercel, nessun backend separato (6 lug 2026)
 
 **Decisione**: API route di Next.js al posto di FastAPI/Express su hosting separato.
@@ -41,3 +43,17 @@ next 16.2.10 · react/react-dom 19.2.7 · tailwindcss + @tailwindcss/postcss 4.3
 ## D6 — Date AI Act post-Omnibus (6 lug 2026)
 
 Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 dic 2027; Annex I → 2 ago 2028; via libera finale Consiglio 29 giu 2026 — fonti: [Gibson Dunn](https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/), [Sidley](https://datamatters.sidley.com/2026/06/22/eu-lawmakers-reach-provisional-agreement-to-delay-key-eu-ai-act-obligations/), [White & Case](https://www.whitecase.com/insight-alert/eu-agrees-digital-omnibus-deal-simplify-ai-rules)). **Assunzione da verificare** alla pubblicazione in GU UE; il contenuto normativo del Checker andrà validato su [EUR-Lex](https://eur-lex.europa.eu) e, idealmente, da revisione legale professionale prima del rilascio.
+
+## D7 — i18n bilingue senza librerie (6 lug 2026)
+
+**Decisione**: internazionalizzazione fatta in casa (~35 righe in `lib/i18n.ts`): route `app/[locale]/`, dizionari JSON in `messages/`, redirect `/` → `/it`, `dynamicParams = false` (lingue ignote → 404), `<html lang>` e metadata corretti per lingua.
+
+**Motivazione**: con 2 sole lingue e zero bisogno di rilevamento automatico, una libreria (next-intl) aggiungerebbe middleware e dipendenze senza benefici proporzionati. La struttura `[locale]` è comunque quella standard: migrare a next-intl in futuro sarà un'evoluzione, non una riscrittura.
+
+**Convenzioni**: codice, chiavi e identificatori in **inglese**; contenuti UI nei dizionari; l'**italiano è la lingua di riferimento** (`type Messages = typeof it` — se l'inglese diverge nelle chiavi, TypeScript blocca la build). Contenuti normativi del Checker: prima IT, poi EN. Rimandati a Fase 4: hreflang/sitemap, rilevamento lingua browser.
+
+## D8 — Workflow di sviluppo con agente (6 lug 2026)
+
+**Decisione**: il repo di lavoro è `C:\dev\...\complyai` (montato nella sessione Cowork). L'agente modifica i file e verifica la build in sandbox; l'utente rivede in locale (`npm run dev`), poi esegue **commit e push** (deploy automatico Vercel). L'agente non committa: la storia git resta interamente dell'utente.
+
+**Nota**: la copia su OneDrive è dismessa (file segnaposto lasciato in loco). Identità git globale configurata (`Jackfdl` / email personale); il primo commit porta l'email istituzionale auto-rilevata — fix opzionale documentato in chat. Connector Vercel attivo per monitoraggio deploy e log.

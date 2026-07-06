@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "ComplyAI — Compliance AI Act per PMI",
+    "description": "Suite di strumenti AI per la compliance delle PMI europee: AI Act Checker, radar normativo, mappatura controlli, audit trail, revisione contratti e scadenzario legale."
+  },
+  "header": {
+    "badge": "anteprima",
+    "tagline": "Compliance per PMI europee",
+    "langLabel": "Lingua"
+  },
+  "hero": {
+    "kicker": "EU AI Act · GDPR · Contratti",
+    "title": "La compliance normativa, alla portata delle PMI.",
+    "subtitle": "Una suite di strumenti AI, aperta e in costruzione pubblica, per capire quali obblighi si applicano alla tua azienda, colmare i gap e documentare ogni decisione — senza costi di ingresso.",
+    "status": "Fase 0 completata: piattaforma online. Il primo modulo è in sviluppo."
+  },
+  "modules": {
+    "title": "I sei moduli della suite",
+    "items": [
+      {
+        "name": "AI Act Compliance Checker",
+        "description": "Classifica il rischio dei tuoi sistemi AI secondo l'EU AI Act e genera checklist di obblighi, gap e piano d'azione.",
+        "status": "Fase 1 — in sviluppo",
+        "active": true
+      },
+      {
+        "name": "Regulation Watcher",
+        "description": "Radar normativo su fonti ufficiali UE: digest periodici e valutazione d'impatto sul profilo della tua azienda.",
+        "status": "In roadmap",
+        "active": false
+      },
+      {
+        "name": "Policy-to-Controls Mapper",
+        "description": "Trasforma policy e requisiti in controlli operativi con owner, cadenza ed evidenze richieste.",
+        "status": "In roadmap",
+        "active": false
+      },
+      {
+        "name": "Audit Trail Builder",
+        "description": "Log append-only di ogni azione umana e AI, consultabile ed esportabile per revisori esterni.",
+        "status": "In roadmap",
+        "active": false
+      },
+      {
+        "name": "Contract Review Agent",
+        "description": "Estrae clausole chiave dai contratti, segnala clausole rischiose o anomale e protezioni mancanti.",
+        "status": "In roadmap",
+        "active": false
+      },
+      {
+        "name": "Legal Deadline Tracker",
+        "description": "Scadenzario di obblighi, rinnovi e finestre di recesso con reminder e stato di avanzamento.",
+        "status": "In roadmap",
+        "active": false
+      }
+    ]
+  },
+  "footer": {
+    "noteLabel": "Nota:",
+    "disclaimer": "ComplyAI fornisce supporto informativo alla compliance e non costituisce parere legale. Per decisioni con effetti giuridici rivolgiti a un professionista abilitato.",
+    "tagline": "progetto open, in sviluppo incrementale."
+  }
+}

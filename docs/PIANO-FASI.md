@@ -19,7 +19,7 @@ Il pacchetto **Omnibus digitale UE** (accordo provvisorio 7 maggio 2026, Parlame
 
 ---
 
-## Fase 0 — Setup e deploy (in corso)
+## Fase 0 — Setup e deploy ✅ (completata il 6 lug 2026)
 
 **Obiettivo**: piattaforma online da subito, pipeline di deploy automatica.
 
@@ -28,9 +28,10 @@ Deliverable:
 - [x] Landing page (roadmap trasparente, disclaimer legale)
 - [x] API route di health check (`/api/health`)
 - [x] README + piano fasi + registro decisioni
-- [ ] Repo GitHub + deploy Vercel funzionante *(azioni utente — vedi checklist)*
+- [x] Repo GitHub ([Jackfdl/complyai](https://github.com/Jackfdl/complyai)) + deploy Vercel: **[complyai-mu.vercel.app](https://complyai-mu.vercel.app)**
+- [x] *(estensione post-fase)* Sito bilingue IT/EN con i18n senza dipendenze (D7)
 
-**Exit criteria**: URL pubblico `*.vercel.app` raggiungibile; push su `main` → rideploy automatico.
+**Exit criteria**: ✅ URL pubblico raggiungibile; push su `main` → rideploy automatico.
 
 ## Fase 1 — MVP: AI Act Compliance Checker
 
@@ -44,6 +45,10 @@ Contenuto:
 5. Persistenza su **Supabase** (Postgres) + autenticazione base (email) + tabella `audit_log` append-only fin da subito (fondamenta del modulo 4).
 
 Fuori scope Fase 1: upload/analisi PDF di policy (richiede LLM → Fase 2), ruoli avanzati, RAG.
+
+**Sprint interni** (ognuno deployato):
+- **Sprint 1.1 — Checker anonimo**: wizard + motore a regole + pagina risultati + report stampabile/salvabile. Nessun account richiesto (zero attrito per le PMI), nessun dato persistito lato server. UI bilingue da subito; contenuti normativi prima in IT, EN a seguire.
+- **Sprint 1.2 — Persistenza**: Supabase (auth email, salvataggio assessment, `audit_log` append-only), dashboard "i miei assessment", export.
 
 **Exit criteria**: una PMI reale può completare il questionario online e scaricare un report corretto e citato.
 
@@ -68,9 +73,9 @@ Design finale, gestione errori, documentazione utente, security & GDPR review de
 
 ---
 
-## Cosa devi fare tu — Fase 0
+## Cosa devi fare tu — Fase 0 ✅ (tutto completato il 6 lug 2026)
 
-Vedi checklist numerata nella risposta dell'agente (riportata anche qui per riferimento):
+Checklist storica, conservata per riferimento:
 
 1. Verifica nome (Google + [EUIPO/tmview](https://www.tmdn.org/tmview/) + disponibilità dominio) — "ComplyAI" è affollato, vedi `DECISIONI.md` D1.
 2. Installa **Node.js LTS** da [nodejs.org](https://nodejs.org) (installer Windows, opzioni predefinite).

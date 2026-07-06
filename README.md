@@ -10,7 +10,7 @@ Suite di strumenti AI per la compliance delle **PMI europee** — EU AI Act, con
 
 | Fase | Contenuto | Stato |
 |------|-----------|-------|
-| 0 | Scaffold + deploy online | ✅ codice pronto — in attesa di deploy |
+| 0 | Scaffold + deploy online + bilingue IT/EN | ✅ **online**: [complyai-mu.vercel.app](https://complyai-mu.vercel.app) |
 | 1 | AI Act Compliance Checker (MVP) | 🔜 prossima |
 | 2 | Altri 5 moduli, uno alla volta | pianificata |
 | 3 | Ruoli, audit trail, guardrail, RAG | pianificata |
@@ -22,6 +22,7 @@ Roadmap completa: [`docs/PIANO-FASI.md`](docs/PIANO-FASI.md) · Decisioni tecnic
 
 - **Next.js 16** (App Router, TypeScript) — frontend **e** API route: nessun backend separato
 - **Tailwind CSS 4** — design minimale professionale
+- **i18n leggero senza dipendenze** — IT (default, `/it`) + EN (`/en`), dizionari in `messages/` (vedi `docs/DECISIONI.md`, D7)
 - **Vercel** (hosting, piano Hobby) · **Supabase** (Postgres + Auth + Storage + pgvector, dalla Fase 1)
 - **LLM**: nessuno in Fase 1 (motore a regole deterministico con citazioni normative); opzioni a costo zero valutate quando servirà
 
@@ -35,12 +36,12 @@ Roadmap completa: [`docs/PIANO-FASI.md`](docs/PIANO-FASI.md) · Decisioni tecnic
 ```bash
 npm install
 npm run dev
-# apri http://localhost:3000
+# apri http://localhost:3000  (redirect a /it; inglese su /en)
 ```
 
 > 💡 **Windows + OneDrive**: lavora su una copia **fuori** da OneDrive (es. `C:\dev\complyai`). `node_modules` contiene decine di migliaia di file: OneDrive li sincronizza e blocca, rallentando tutto.
 
-Verifica API: `http://localhost:3000/api/health` → `{ "stato": "ok" }`
+Verifica API: `http://localhost:3000/api/health` → `{ "status": "ok" }`
 
 ## Build di produzione
 
@@ -63,14 +64,20 @@ Ogni push su `main` rideploya automaticamente (CI minima inclusa, richiesta dall
 ```
 complyai/
 ├── app/
+│   ├── [locale]/             # route localizzate (it | en)
+│   │   ├── layout.tsx        # layout root (lang dinamico, metadata localizzati)
+│   │   └── page.tsx          # landing con roadmap moduli e switch lingua
 │   ├── api/health/route.ts   # health check API
-│   ├── globals.css           # Tailwind v4
-│   ├── layout.tsx            # layout root (lang=it, metadata)
-│   └── page.tsx              # landing con roadmap moduli
+│   └── globals.css           # Tailwind v4
+├── lib/
+│   └── i18n.ts               # locales, tipi e dizionari
+├── messages/
+│   ├── it.json               # contenuti italiano (lingua di riferimento)
+│   └── en.json               # contenuti inglese
 ├── docs/
 │   ├── PIANO-FASI.md         # roadmap dettagliata fasi 0–4
 │   └── DECISIONI.md          # registro decisioni (ADR)
-├── next.config.ts
+├── next.config.ts            # redirect / → /it
 ├── postcss.config.mjs
 ├── package.json
 └── tsconfig.json

@@ -1,9 +1,9 @@
 // Endpoint di health check: verifica che le API route funzionino sul deploy.
-// Utile in Fase 0 per confermare che Vercel serve anche il backend, non solo le pagine.
+// Convenzione D8: chiavi e codice in inglese, UI localizzata.
 export function GET() {
   return Response.json({
-    servizio: "complyai",
-    stato: "ok",
-    fase: 0,
+    service: "complyai",
+    status: "ok",
+    phase: 0,
   });
 }

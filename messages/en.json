@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "ComplyAI — AI Act compliance for SMEs",
+    "description": "A suite of AI tools for European SMEs' compliance: AI Act Checker, regulation radar, controls mapping, audit trail, contract review and legal deadline tracking."
+  },
+  "header": {
+    "badge": "preview",
+    "tagline": "Compliance for European SMEs",
+    "langLabel": "Language"
+  },
+  "hero": {
+    "kicker": "EU AI Act · GDPR · Contracts",
+    "title": "Regulatory compliance, within every SME's reach.",
+    "subtitle": "An open suite of AI tools, built in public, to understand which obligations apply to your company, close the gaps and document every decision — with no entry cost.",
+    "status": "Phase 0 complete: platform online. The first module is under development."
+  },
+  "modules": {
+    "title": "The six modules of the suite",
+    "items": [
+      {
+        "name": "AI Act Compliance Checker",
+        "description": "Classifies the risk of your AI systems under the EU AI Act and generates obligation checklists, gaps and an action plan.",
+        "status": "Phase 1 — in development",
+        "active": true
+      },
+      {
+        "name": "Regulation Watcher",
+        "description": "Regulatory radar on official EU sources: periodic digests and impact assessment based on your company profile.",
+        "status": "On the roadmap",
+        "active": false
+      },
+      {
+        "name": "Policy-to-Controls Mapper",
+        "description": "Turns policies and requirements into operational controls with owners, cadence and required evidence.",
+        "status": "On the roadmap",
+        "active": false
+      },
+      {
+        "name": "Audit Trail Builder",
+        "description": "Append-only log of every human and AI action, searchable and exportable for external auditors.",
+        "status": "On the roadmap",
+        "active": false
+      },
+      {
+        "name": "Contract Review Agent",
+        "description": "Extracts key clauses from contracts, flags risky or unusual terms and missing standard protections.",
+        "status": "On the roadmap",
+        "active": false
+      },
+      {
+        "name": "Legal Deadline Tracker",
+        "description": "Tracks obligations, renewals and withdrawal windows with reminders and progress status.",
+        "status": "On the roadmap",
+        "active": false
+      }
+    ]
+  },
+  "footer": {
+    "noteLabel": "Note:",
+    "disclaimer": "ComplyAI provides informational compliance support and does not constitute legal advice. For decisions with legal effects, consult a qualified professional.",
+    "tagline": "an open project, built incrementally."
+  }
+}
