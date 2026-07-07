@@ -336,6 +336,72 @@ create trigger matrices_audit_delete
 
 Cambiare provider in futuro = cambiare queste 3 variabili (qualunque endpoint OpenAI-compatibile, es. Groq: `https://api.groq.com/openai/v1`).
 
+## 10. Contract Review Agent (Fase 2.4) — SQL aggiuntivo
+
+Nel **SQL Editor** esegui anche questo blocco. Nota privacy (D15): salviamo il **memo di revisione** (l'analisi), **non** il testo integrale del contratto.
+
+```sql
+-- ============================================================
+-- ComplyAI — Schema Fase 2.4: Contract Review Agent
+-- ============================================================
+
+create table public.contract_reviews (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  title text not null default '—',
+  analysis jsonb not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.contract_reviews enable row level security;
+
+create policy "select own reviews" on public.contract_reviews
+  for select using (auth.uid() = user_id);
+create policy "insert own reviews" on public.contract_reviews
+  for insert with check (auth.uid() = user_id);
+create policy "update own reviews" on public.contract_reviews
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "delete own reviews" on public.contract_reviews
+  for delete using (auth.uid() = user_id);
+
+-- Audit automatico (stesso schema degli altri moduli)
+create or replace function public.log_review_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (auth.uid(), 'contract_review.created', 'contract_reviews', new.id::text,
+            jsonb_build_object('title', new.title,
+                               'clauses', jsonb_array_length(new.analysis->'clauses')));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (auth.uid(), 'contract_review.updated', 'contract_reviews', new.id::text,
+            jsonb_build_object('title', old.title),
+            jsonb_build_object('title', new.title,
+                               'clauses', jsonb_array_length(new.analysis->'clauses')));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (auth.uid(), 'contract_review.deleted', 'contract_reviews', old.id::text,
+            jsonb_build_object('title', old.title));
+    return old;
+  end if;
+end $$;
+
+create trigger reviews_audit_insert
+  before insert or update on public.contract_reviews
+  for each row execute function public.log_review_change();
+
+create trigger reviews_audit_delete
+  after delete on public.contract_reviews
+  for each row execute function public.log_review_change();
+```
+
+Il modulo usa le **stesse chiavi** del Checker (Supabase) e, per l'analisi AI opzionale, le stesse 3 variabili LLM del Mapper (§9). L'estrazione del testo dai file avviene **nel browser**: il contratto non viene inviato al server a meno che tu non attivi l'analisi AI da loggato. Le date estratte finiscono nello **Scadenzario** (Fase 2.2) con un click.
+
 ## Note operative
 
 - **Pausa da inattività**: il progetto Free si pausa dopo ~7 giorni senza attività DB; si riattiva dal dashboard in ~1 minuto (mitigazione strutturale in Fase 2.1 col Regulation Watcher).

@@ -105,3 +105,19 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 **Motivazione**: rispetto della scelta dell'utente minimizzandone i rischi; il fallback garantisce che il modulo non dipenda mai dalla disponibilità/quota del provider (nessuna funzione che "muore" se il free tier cambia — coerente con D2/D3).
 
 **Fonti (consultate 7 lug 2026)**: [Groq — Your Data](https://console.groq.com/docs/your-data), [Groq privacy](https://groq.com/privacy-policy), [Mistral pricing/tiers](https://mistral.ai/pricing/), [Mistral data retention](https://meetily.ai/llm-privacy/mistral).
+
+## D15 — Contract Review Agent: estrazione nel browser, libreria clausole curata, RAG rimandato (7 lug 2026)
+
+**Decisione**: il modulo 5 (Contract Review Agent) parte con un **perimetro onesto**:
+
+1. **Estrazione testo interamente client-side** (`lib/contracts/extract.ts`): PDF via `pdfjs-dist`, DOCX via `mammoth`, TXT/MD nativo — import dinamici (caricati solo se servono). Il contratto **non lascia il PC** dell'utente a meno che, da loggato, non attivi l'analisi AI (che invia il *testo*, non il file, al provider LLM configurato — §9/D14).
+2. **Libreria clausole v1 curata e versionata nel codice** (`lib/contracts/library.ts`, `CLAUSE_LIBRARY_VERSION`): categorie con pattern deterministici IT/EN, nota di rischio e flag `expected` (se attesa e assente → protezione mancante). Analisi euristica pura e testata (`analyze.ts` + `contracts.test.ts`): clausole trovate, protezioni mancanti, **date/finestre chiave** (date assolute con `isoDate`, preavvisi, durate/rinnovi).
+3. **Analisi AI opzionale** (`lib/contracts/llm.ts`) sullo stesso client LLM condiviso, con le stesse salvaguardie di D14: endpoint autenticato, JSON validato rigidamente, **fallback automatico** sulla libreria locale se l'LLM non risponde/risponde male, e dichiarazione dell'engine in UI. Livelli clausola: `info` / `warning` / `risk`.
+4. **Prima integrazione reale fra moduli**: le date con `isoDate` si agganciano allo **Scadenzario** (Fase 2.2) con un click (`createDeadline`, categoria "contratti") — mantiene la promessa di D13.
+5. **Persistenza del memo, non del contratto** (`storage.ts`, tabella `contract_reviews`, §10): RLS per-utente + audit via trigger (`contract_review.created/updated/deleted`), coerente con D10.
+
+**RAG semantico con pgvector: esplicitamente rimandato alla Fase 3.** La "libreria clausole" v1 è curata nel codice, versionata e testabile: preferibile a un RAG immaturo su materia legale. L'estensione semantica su libreria ampia entrerà quando ci saranno dati e clausole reali su cui valutarla.
+
+**Motivazione**: coerenza con D2/D4/D14 (zero costi, nessuna dipendenza forte dal provider, output riproducibile e auditabile) e con il vincolo di privacy (il documento resta locale per default). Meglio un modulo deterministico e onesto sui limiti che una promessa "AI magica" sul contratto.
+
+**Limiti accettati (v0.1.0)**: i PDF scansionati senza testo (immagine) non sono estraibili (nessun OCR in beta → messaggio esplicito, si incolla il testo); pattern keyword-based = possibili falsi negativi su formulazioni atipiche (avviso "non trovate ≠ certamente assenti"); nessun parere legale (disclaimer in UI). OCR ed estensione libreria: Fase 3/4.

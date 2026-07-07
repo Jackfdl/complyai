@@ -12,7 +12,7 @@
     "kicker": "EU AI Act · GDPR · Contracts",
     "title": "Regulatory compliance, within every SME's reach.",
     "subtitle": "An open suite of AI tools, built in public, to understand which obligations apply to your company, close the gaps and document every decision — with no entry cost.",
-    "status": "Four modules live in beta: Checker, Regulatory radar, Controls mapper, Deadline tracker."
+    "status": "Five modules live in beta: Checker, Regulatory radar, Controls mapper, Deadline tracker, Contract review."
   },
   "checker": {
     "metaTitle": "AI Act Compliance Checker — ComplyAI",
@@ -51,9 +51,9 @@
       },
       {
         "name": "Contract Review Agent",
-        "description": "Extracts key clauses from contracts, flags risky or unusual terms and missing standard protections.",
-        "status": "On the roadmap",
-        "active": false
+        "description": "Extracts key clauses from contracts, flags risky or unusual terms and missing standard protections; key dates go to the Deadline Tracker in one click.",
+        "status": "Beta live",
+        "active": true
       },
       {
         "name": "Legal Deadline Tracker",
