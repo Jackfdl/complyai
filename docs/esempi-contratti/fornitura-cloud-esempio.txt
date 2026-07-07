@@ -1,0 +1,39 @@
+CONTRATTO DI FORNITURA DI SERVIZI CLOUD
+
+Tra Alfa S.r.l., con sede in Milano, P.IVA 01234567890 (di seguito il "Cliente"),
+e Beta Technologies Ltd, con sede in Dublino (Irlanda) (di seguito il "Fornitore").
+
+Art. 1 — Oggetto
+Il Fornitore fornisce al Cliente una piattaforma cloud SaaS per la gestione documentale,
+secondo le specifiche dell'Allegato A.
+
+Art. 2 — Decorrenza e durata
+Il presente contratto ha durata di 24 mesi a decorrere dal 01/03/2026. Alla scadenza il
+contratto si rinnova tacitamente per periodi successivi di 12 mesi, salvo disdetta di una
+delle parti da comunicarsi a mezzo PEC con preavviso di almeno 90 giorni rispetto alla
+scadenza.
+
+Art. 3 — Corrispettivi e pagamenti
+Il Cliente corrisponderà un canone annuo di euro 36.000 oltre IVA, con pagamento entro
+30 giorni data fattura.
+
+Art. 4 — Livelli di servizio e penali
+In caso di mancata attivazione del servizio entro il 15/04/2026, il Fornitore riconoscerà
+al Cliente una penale di euro 200 per ogni giorno di ritardo.
+
+Art. 5 — Limitazione di responsabilità
+La responsabilità complessiva del Fornitore è limitata all'importo dei corrispettivi
+corrisposti dal Cliente nei 12 mesi precedenti l'evento dannoso.
+
+Art. 6 — Legge applicabile e foro
+Il contratto è regolato dalla legge irlandese. Per ogni controversia sarà competente in via
+esclusiva il foro di Dublino.
+
+Art. 7 — Cessione
+Il Fornitore potrà cedere il presente contratto a società del proprio gruppo senza necessità
+di preventivo consenso del Cliente.
+
+Firmato a Milano, il 20 febbraio 2026.
+
+Alfa S.r.l. — Il legale rappresentante
+Beta Technologies Ltd — The authorised signatory

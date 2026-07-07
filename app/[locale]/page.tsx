@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, isLocale, locales } from "@/lib/i18n";
 
 // Percorso del modulo per indice di card (solo per i moduli attivi).
-const moduleHrefs = ["checker", "watcher", "mapper", "", "contracts", "deadlines"];
+const moduleHrefs = ["checker", "watcher", "mapper", "audit", "contracts", "deadlines"];
 
 export default async function Home({
   params,

@@ -12,7 +12,7 @@
     "kicker": "EU AI Act · GDPR · Contratti",
     "title": "La compliance normativa, alla portata delle PMI.",
     "subtitle": "Una suite di strumenti AI, aperta e in costruzione pubblica, per capire quali obblighi si applicano alla tua azienda, colmare i gap e documentare ogni decisione — senza costi di ingresso.",
-    "status": "Cinque moduli online in beta: Checker, Radar normativo, Mapper dei controlli, Scadenzario, Revisione contratti."
+    "status": "Sei moduli online in beta: Checker, Radar normativo, Mapper dei controlli, Registro audit, Revisione contratti, Scadenzario."
   },
   "checker": {
     "metaTitle": "AI Act Compliance Checker — ComplyAI",
@@ -45,9 +45,9 @@
       },
       {
         "name": "Audit Trail Builder",
-        "description": "Log append-only di ogni azione umana e AI, consultabile ed esportabile per revisori esterni.",
-        "status": "In roadmap",
-        "active": false
+        "description": "Log append-only di ogni azione sui tuoi dati, consultabile con filtri ed esportabile (CSV/JSON) per revisori esterni.",
+        "status": "Beta online",
+        "active": true
       },
       {
         "name": "Contract Review Agent",
