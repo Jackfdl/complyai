@@ -61,6 +61,8 @@ export interface DeadlineItem {
   what: string;
   ref: string;
   pendingOmnibus?: boolean;
+  /** Data assoluta YYYY-MM-DD → abilita "aggiungi allo Scadenzario". Assente per le date già applicabili. */
+  isoDate?: string;
 }
 
 export interface ClassificationResult {

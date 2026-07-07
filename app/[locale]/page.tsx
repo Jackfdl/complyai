@@ -121,6 +121,14 @@ export default async function Home({
           {t.footer.disclaimer}
         </p>
         <p className="mt-3">
+          <Link
+            href={`/${locale}/guardrail`}
+            className="font-medium text-indigo-600 hover:text-indigo-800"
+          >
+            {t.footer.guardrailLink}
+          </Link>
+        </p>
+        <p className="mt-3">
           © {new Date().getFullYear()} ComplyAI — {t.footer.tagline}
         </p>
       </footer>

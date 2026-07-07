@@ -68,6 +68,11 @@ Ordine proposto (complessità crescente, ogni modulo deployato prima del success
 
 Ruoli e approvazioni (analyst / reviewer / admin con matrice permessi), audit trail completo con UI di consultazione ed export, guardrail espliciti (cosa l'agente fa in autonomia vs conferma umana; mai inviare comunicazioni esterne; mai eliminare audit log; mai certezza legale assoluta), template strutturati riutilizzabili, knowledge base/RAG rifinita su tutti i moduli.
 
+**Sprint interni (ognuno deployato):**
+- **3.1 — Integrazione Checker → Scadenzario** ✅ (7 lug 2026): le date normative dell'AI Act che risultano applicabili dal report del Checker si aggiungono al Legal Deadline Tracker con un click (bottone "→ Scadenzario" per ogni data futura con `isoDate`; già-applicabili escluse). Riusa `createDeadline` (categoria "AI Act"); nessun nuovo schema. Completa l'aggancio promesso in D13 e allinea il Checker al Contract Review Agent (che già alimentava lo Scadenzario). `DeadlineItem.isoDate` popolato sulle date post-Omnibus (Annex III 2 dic 2027, Annex I 2 ago 2028, art. 50 2 ago 2026, NCII/CSAM 2 dic 2026).
+- **3.2 — Guardrail espliciti** ✅ (7 lug 2026): i confini della suite resi espliciti e verificabili in `lib/guardrails/content.ts` — 11 guardrail versionati e bilingui in 6 categorie (autonomia/controllo, nessuna comunicazione esterna, tracciabilità immutabile, nessuna certezza legale, dati/privacy, determinismo), ognuno con il **meccanismo reale** che lo garantisce e il rimando alla decisione (D4/D6/D9/D10/D13/D14/D15/D16). Pagina pubblica `/[locale]/guardrail` (server component, no login) + link dal footer. Integrità testata (parità IT/EN, id unici, categorie). Non marketing: regole scritte nel prodotto (D17).
+- **Prossimi (ordine proposto)**: ruoli/approvazioni (richiede schema org/ruoli + RLS), notifiche email digest (richiede provider SMTP → **conferma utente necessaria**, es. Resend free tier), rifiniture Contract Review (qualità estratti, OCR PDF scansionati, libreria clausole ampliata), EN review legale.
+
 ## Fase 4 — Rifinitura e security review
 
 Design finale, gestione errori, documentazione utente, security & GDPR review del prodotto stesso (registro trattamenti, data retention, informativa privacy — il prodotto tratta documenti aziendali sensibili), case study per LinkedIn.

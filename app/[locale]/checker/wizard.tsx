@@ -14,9 +14,11 @@ import {
   saveAssessment,
 } from "@/lib/checker/storage";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
+import { createDeadline } from "@/lib/deadlines/storage";
 import type {
   CheckerAnswers,
   CitedItem,
+  DeadlineItem,
   ObligationStatus,
   RiskLevel,
 } from "@/lib/checker/types";
@@ -119,6 +121,21 @@ export default function CheckerWizard({ locale }: { locale: Locale }) {
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveError, setSaveError] = useState<string>("");
   const [loadError, setLoadError] = useState(false);
+  const [addedDeadlines, setAddedDeadlines] = useState<Record<number, boolean>>({});
+
+  // Aggancio al Legal Deadline Tracker (Fase 2.2): una data normativa → una scadenza.
+  const addRegDeadline = async (i: number, d: DeadlineItem) => {
+    if (!supabase || !session || !d.isoDate) return;
+    const name = answers.systemName.trim();
+    const short = d.what.length > 60 ? `${d.what.slice(0, 60)}…` : d.what;
+    const { error } = await createDeadline(supabase, {
+      title: name ? `${name} — AI Act: ${short}` : `AI Act: ${short}`,
+      due_date: d.isoDate,
+      category: "AI Act",
+      notes: `${d.date} · ${d.ref}`,
+    });
+    if (!error) setAddedDeadlines((m) => ({ ...m, [i]: true }));
+  };
 
   // Sessione auth (se Supabase è configurato)
   useEffect(() => {
@@ -545,6 +562,7 @@ export default function CheckerWizard({ locale }: { locale: Locale }) {
                     <th className="py-2 pr-4">{ui.thWhen}</th>
                     <th className="py-2 pr-4">{ui.thWhat}</th>
                     <th className="py-2">{ui.thSource}</th>
+                    <th className="no-print py-2" />
                   </tr>
                 </thead>
                 <tbody>
@@ -556,10 +574,24 @@ export default function CheckerWizard({ locale }: { locale: Locale }) {
                       </td>
                       <td className="py-2 pr-4 text-slate-600">{d.what}</td>
                       <td className="py-2 text-xs text-slate-400">{d.ref}</td>
+                      <td className="no-print py-2 whitespace-nowrap text-right">
+                        {session && d.isoDate && (
+                          <button
+                            onClick={() => void addRegDeadline(i, d)}
+                            disabled={addedDeadlines[i]}
+                            className="rounded-lg border border-slate-300 px-3 py-1 text-xs font-medium text-indigo-700 hover:border-indigo-400 disabled:border-emerald-300 disabled:text-emerald-700"
+                          >
+                            {addedDeadlines[i] ? ui.addedToDeadlines : ui.addToDeadlines}
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {!session && result.deadlines.some((d) => d.isoDate) && (
+                <p className="no-print mt-2 text-xs text-slate-400">{ui.deadlineToTrackerHint}</p>
+              )}
             </>
           )}
 

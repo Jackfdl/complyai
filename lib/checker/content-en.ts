@@ -312,23 +312,27 @@ export const contentEn: CheckerContent = {
       what: "Effect of the new NCII/CSAM prohibition introduced by the Omnibus.",
       ref: "Art. 5 AI Act as amended by the Omnibus",
       pendingOmnibus: true,
+      isoDate: "2026-12-02",
     },
     dlAnnex3: {
       date: "2 Dec 2027",
       what: "High-risk obligations apply to Annex III systems (post-Omnibus; was 2 Aug 2026).",
       ref: "Art. 113 AI Act as amended by the Omnibus",
       pendingOmnibus: true,
+      isoDate: "2027-12-02",
     },
     dlAnnex1: {
       date: "2 Aug 2028",
       what: "High-risk obligations apply to Annex I systems (post-Omnibus; was 2 Aug 2027).",
       ref: "Art. 113 AI Act as amended by the Omnibus",
       pendingOmnibus: true,
+      isoDate: "2028-08-02",
     },
     dlArt50: {
       date: "2 Aug 2026",
       what: "Art. 50 transparency obligations: NOT postponed by the Omnibus (only grace: 50(2) marking until 2 Dec 2026 for systems already on the market).",
       ref: "Arts. 50 and 113 AI Act",
+      isoDate: "2026-08-02",
     },
     dlGpai: {
       date: "Already applicable (since 2 Aug 2025)",

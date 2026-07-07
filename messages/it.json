@@ -66,6 +66,7 @@
   "footer": {
     "noteLabel": "Nota:",
     "disclaimer": "ComplyAI fornisce supporto informativo alla compliance e non costituisce parere legale. Per decisioni con effetti giuridici rivolgiti a un professionista abilitato.",
+    "guardrailLink": "Garanzie e limiti →",
     "tagline": "progetto open, in sviluppo incrementale."
   }
 }

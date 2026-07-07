@@ -66,6 +66,7 @@
   "footer": {
     "noteLabel": "Note:",
     "disclaimer": "ComplyAI provides informational compliance support and does not constitute legal advice. For decisions with legal effects, consult a qualified professional.",
+    "guardrailLink": "Safeguards & limits →",
     "tagline": "an open project, built incrementally."
   }
 }
