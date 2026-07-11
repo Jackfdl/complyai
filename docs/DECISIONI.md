@@ -106,6 +106,14 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 
 **Fonti (consultate 7 lug 2026)**: [Groq — Your Data](https://console.groq.com/docs/your-data), [Groq privacy](https://groq.com/privacy-policy), [Mistral pricing/tiers](https://mistral.ai/pricing/), [Mistral data retention](https://meetily.ai/llm-privacy/mistral).
 
+## D17 — Trasparenza radicale come posizionamento: /about con FAQ e alternative (8 lug 2026)
+
+**Decisione** (richiesta dell'utente): pagina pubblica bilingue `/[locale]/about` con documentazione di come funziona il progetto (principi: deterministico-prima, dati EU, audit immutabile, contenuti versionati), FAQ, **elenco di alternative più mature** — a partire dal [Compliance Checker ufficiale della Commissione UE](https://ai-act-service-desk.ec.europa.eu/en) e dal [checker del Future of Life Institute](https://artificialintelligenceact.eu/assessment/eu-ai-act-compliance-checker/) — e contatti per contribuire ([LinkedIn Giacomo Fedeli](https://www.linkedin.com/in/giacomo-fedeli-277765239/), GitHub). Link nel footer della landing.
+
+**Motivazione**: per un tool di compliance la credibilità È il prodotto. Citare i concorrenti migliori e le fonti ufficiali gratuite costa traffico ma compra fiducia — e per un progetto beta/portfolio la fiducia vale più del traffico. Nessuna affiliazione, marchi dei rispettivi proprietari, invito costante alla consulenza umana.
+
+**Nota di manutenzione**: l'elenco alternative va riverificato periodicamente (nomi e URL possono cambiare); errori segnalati → correzione con menzione qui.
+
 ## D15 — Contract Review Agent: estrazione nel browser, libreria clausole curata, RAG rimandato (7 lug 2026)
 
 **Decisione**: il modulo 5 (Contract Review Agent) parte con un **perimetro onesto**:

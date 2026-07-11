@@ -120,7 +120,13 @@ export default async function Home({
           </strong>{" "}
           {t.footer.disclaimer}
         </p>
-        <p className="mt-3">
+        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
+          <Link
+            href={`/${locale}/about`}
+            className="font-medium text-indigo-600 hover:text-indigo-800"
+          >
+            {t.footer.aboutLink}
+          </Link>
           <Link
             href={`/${locale}/guardrail`}
             className="font-medium text-indigo-600 hover:text-indigo-800"

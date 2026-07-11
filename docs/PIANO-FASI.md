@@ -78,6 +78,8 @@ Ruoli e approvazioni (analyst / reviewer / admin con matrice permessi), audit tr
 
 Design finale, gestione errori, documentazione utente, security & GDPR review del prodotto stesso (registro trattamenti, data retention, informativa privacy — il prodotto tratta documenti aziendali sensibili), case study per LinkedIn.
 
+**Avviata l'8 lug 2026 — documentazione pubblica** ✅: pagina `/[locale]/about` bilingue con "come funziona" (principi di progettazione), FAQ (10 domande), sezione **alternative più complete** (fonti ufficiali UE, piattaforme enterprise, contract review pro — citate con onestà, senza affiliazione) e contatti per contribuire (LinkedIn + GitHub). Vedi D17.
+
 ---
 
 ## Cosa devi fare tu — Fase 0 ✅ (tutto completato il 6 lug 2026)

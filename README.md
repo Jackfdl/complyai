@@ -18,6 +18,8 @@ Suite di strumenti AI per la compliance delle **PMI europee** — EU AI Act, con
 
 Roadmap completa: [`docs/PIANO-FASI.md`](docs/PIANO-FASI.md) · Decisioni tecniche: [`docs/DECISIONI.md`](docs/DECISIONI.md)
 
+**Documentazione pubblica** (come funziona, FAQ, alternative più complete): [`/it/about`](https://complyai-mu.vercel.app/it/about) · Contributi e segnalazioni: [LinkedIn — Giacomo Fedeli](https://www.linkedin.com/in/giacomo-fedeli-277765239/) o le issue di questo repo.
+
 ## Stack
 
 - **Next.js 16** (App Router, TypeScript) — frontend **e** API route: nessun backend separato
