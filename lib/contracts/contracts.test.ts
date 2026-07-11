@@ -110,3 +110,41 @@ describe("buildContractPrompt", () => {
     expect(p).toMatch(/Non inventare/);
   });
 });
+
+describe("sentenceAround (qualità estratti)", () => {
+  it("non spezza i separatori decimali", () => {
+    const t = "Il Fornitore applica una penale di euro 36.000 in caso di grave ritardo.";
+    const pen = findClauses(t, "it").find((c) => c.category === "penalties");
+    expect(pen?.excerpt).toContain("36.000");
+  });
+  it("non spezza le abbreviazioni (art., c.c.)", () => {
+    const t = "Ai sensi dell'art. 1229 c.c. la responsabilità è limitata al massimo previsto.";
+    const cap = findClauses(t, "it").find((c) => c.category === "liability-cap");
+    expect(cap?.excerpt).toContain("responsabilità è limitata");
+    expect(cap?.excerpt).toContain("art. 1229");
+  });
+});
+
+describe("libreria clausole ampliata", () => {
+  it("individua IP, esclusiva, modifiche unilaterali, revisione prezzi e SLA", () => {
+    const t = [
+      "La proprietà intellettuale degli sviluppi resta del Fornitore.",
+      "È previsto un patto di esclusiva a favore del Fornitore.",
+      "Il Fornitore si riserva di modificare le condizioni economiche.",
+      "È ammessa la revisione dei prezzi su base annua.",
+      "I livelli di servizio (SLA) prevedono un uptime del 99%.",
+    ].join("\n");
+    const ids = findClauses(t, "it").map((c) => c.category);
+    expect(ids).toContain("ip");
+    expect(ids).toContain("exclusivity");
+    expect(ids).toContain("unilateral-changes");
+    expect(ids).toContain("price-revision");
+    expect(ids).toContain("sla");
+  });
+  it("non confonde il foro esclusivo con l'esclusiva contrattuale", () => {
+    const t = "Foro competente esclusivo per ogni controversia è quello di Milano.";
+    const ids = findClauses(t, "it").map((c) => c.category);
+    expect(ids).toContain("governing-law");
+    expect(ids).not.toContain("exclusivity");
+  });
+});

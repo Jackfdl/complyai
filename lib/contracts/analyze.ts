@@ -7,16 +7,36 @@ import type { ContractAnalysis, FoundClause, KeyDate, MissingProtection } from "
 const MONTHS_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
 const MONTHS_EN = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
-/** Frase (o suo intorno) che contiene l'indice dato. */
+// Abbreviazioni che NON chiudono una frase (evita tagli su "Art.", "c.c.", "S.r.l.", "Ltd."…).
+const ABBREV = new Set([
+  "art", "artt", "n", "nn", "c", "cc", "cod", "es", "pag", "p", "pp", "fig", "tab",
+  "lett", "comma", "d", "lgs", "dlgs", "reg", "ue", "ce", "spa", "srl", "s", "r", "l",
+  "ltd", "inc", "co", "sig", "dott", "avv", "prof", "mr", "mrs", "vs", "ca", "tel", "iva",
+]);
+
+/** True se il punto in posizione i chiude davvero una frase (non decimale, non abbreviazione). */
+function isSentenceBoundary(text: string, i: number): boolean {
+  const after = text[i + 1];
+  if (after !== undefined && !/\s/.test(after)) return false; // deve seguire spazio/fine
+  if (/\d/.test(text[i - 1] ?? "")) return false; // decimale: 36.000, 1.229
+  let j = i - 1;
+  while (j >= 0 && /[A-Za-zÀ-ÿ]/.test(text[j])) j -= 1;
+  return !ABBREV.has(text.slice(j + 1, i).toLowerCase());
+}
+
+/** Frase (o suo intorno) che contiene l'indice dato, senza spezzare abbreviazioni o decimali. */
 function sentenceAround(text: string, index: number, maxLen = 260): string {
-  const start = Math.max(
-    text.lastIndexOf(".", index),
-    text.lastIndexOf("\n", index),
-    0
-  );
-  let end = text.indexOf(".", index);
-  if (end === -1) end = Math.min(text.length, index + maxLen);
-  const s = text.slice(start + 1, end + 1).replace(/\s+/g, " ").trim();
+  let start = 0;
+  for (let i = index - 1; i >= 0; i -= 1) {
+    if (text[i] === "\n") { start = i + 1; break; }
+    if (text[i] === "." && isSentenceBoundary(text, i)) { start = i + 1; break; }
+  }
+  let end = text.length;
+  for (let i = Math.max(index, 0); i < text.length; i += 1) {
+    if (text[i] === "\n") { end = i; break; }
+    if (text[i] === "." && isSentenceBoundary(text, i)) { end = i + 1; break; }
+  }
+  const s = text.slice(start, end).replace(/\s+/g, " ").trim();
   return s.length > maxLen ? s.slice(0, maxLen - 1).trimEnd() + "…" : s;
 }
 

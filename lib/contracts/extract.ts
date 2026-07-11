@@ -39,6 +39,8 @@ export async function extractTextFromFile(
             .join(" ") + "\n";
       }
       await doc.destroy();
+      // PDF probabilmente scansionato (immagine senza layer testo): quasi nessun carattere.
+      if (text.replace(/\s/g, "").length < 40) return { error: "extract-failed" };
       return { text };
     }
 

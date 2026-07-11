@@ -163,4 +163,59 @@ export const CLAUSE_CATEGORIES: ClauseCategory[] = [
     level: "info",
     expected: false,
   },
+  {
+    id: "ip",
+    label: { it: "Proprietà intellettuale", en: "Intellectual property" },
+    patterns: ["proprietà intellettuale", "diritti di proprietà intellettuale", "proprietà industriale", "titolarità dei diritti", "intellectual property", "ip rights", "ownership of the deliverables"],
+    riskNote: {
+      it: "Verifica a chi restano i diritti su sviluppi, personalizzazioni e dati: spesso restano al fornitore. Chiedi una licenza chiara o la titolarità di ciò che paghi.",
+      en: "Check who keeps the rights to developments, customisations and data: they often stay with the supplier. Ask for a clear licence or ownership of what you pay for.",
+    },
+    level: "warning",
+    expected: false,
+  },
+  {
+    id: "exclusivity",
+    label: { it: "Esclusiva", en: "Exclusivity" },
+    patterns: ["patto di esclusiva", "clausola di esclusiva", "diritto di esclusiva", "in esclusiva", "esclusiva di fornitura", "exclusivity", "exclusive supply", "exclusive distribution", "sole supplier"],
+    riskNote: {
+      it: "L'esclusiva ti vincola a un solo fornitore/cliente: valuta durata, uscite e conseguenze del mancato raggiungimento di minimi.",
+      en: "Exclusivity ties you to a single supplier/customer: weigh duration, exits and the consequences of missing minimums.",
+    },
+    level: "warning",
+    expected: false,
+  },
+  {
+    id: "unilateral-changes",
+    label: { it: "Modifiche unilaterali", en: "Unilateral changes" },
+    patterns: ["modifica unilaterale", "modificare unilateralmente", "facoltà di modificare", "ius variandi", "si riserva di modificare", "unilaterally modify", "unilateral change", "reserves the right to modify", "reserves the right to change"],
+    riskNote: {
+      it: "Le modifiche unilaterali (di prezzi, condizioni o servizio) sono sfavorevoli: pretendi preavviso adeguato e diritto di recesso se non le accetti.",
+      en: "Unilateral changes (to price, terms or service) are unfavourable: require adequate notice and a right to withdraw if you do not accept them.",
+    },
+    level: "warning",
+    expected: false,
+  },
+  {
+    id: "price-revision",
+    label: { it: "Revisione e adeguamento prezzi", en: "Price revision and indexation" },
+    patterns: ["revisione dei prezzi", "adeguamento dei prezzi", "adeguamento istat", "indicizzazione", "aggiornamento del canone", "price adjustment", "price revision", "indexation", "cpi adjustment"],
+    riskNote: {
+      it: "Verifica come e quando i prezzi possono aumentare (indice, tetto massimo, periodicità): senza un cap l'adeguamento può erodere il tuo budget.",
+      en: "Check how and when prices can rise (index, cap, frequency): without a cap, indexation can erode your budget.",
+    },
+    level: "warning",
+    expected: false,
+  },
+  {
+    id: "sla",
+    label: { it: "Livelli di servizio (SLA)", en: "Service levels (SLA)" },
+    patterns: ["livello di servizio", "livelli di servizio", "service level", "sla", "uptime", "disponibilità garantita", "tempi di ripristino"],
+    riskNote: {
+      it: "Verifica che gli SLA siano misurabili e con conseguenze (penali/crediti di servizio) in caso di mancato rispetto: senza conseguenze sono solo promesse.",
+      en: "Check that SLAs are measurable and carry consequences (penalties/service credits) if missed: without consequences they are just promises.",
+    },
+    level: "info",
+    expected: false,
+  },
 ];
