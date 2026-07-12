@@ -130,6 +130,12 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 
 **Responsive**: le pagine sono già mobile-first (grid `sm:`, `flex-wrap`, larghezze fluide); questo intervento aggiunge lo scroll orizzontale alla tabella delle scadenze del report Checker (4 colonne, unica tabella del sito) e verifica il resto. Il toggle è dimensionato per il tocco (44px).
 
+## D20 — Identità visiva: logomark, icone dei moduli, micro-interazioni (9 lug 2026)
+
+**Decisione** (richiesta dell'utente): identità visiva propria, tutta **SVG inline + CSS puro** (zero dipendenze, zero asset esterni, nitida a ogni densità, coerente coi due temi): (1) **logomark** scudo-con-spunta con gradiente indigo→cielo (`app/brand.tsx`), usato nell'header della landing e come **favicon** (`app/icon.svg`, convenzione Next); wordmark "Comply**AI**" con gradiente del marchio; (2) **set di sei icone coerenti** per i moduli (stroke 1.7, angoli arrotondati, `currentColor`) nelle card della landing; (3) **micro-interazioni**: animazione d'ingresso scaglionata del hero (fade-up), trama a punti di sfondo con maschera radiale, card che si sollevano all'hover con icona che ruota/scala, feedback di pressione (`scale .96`) su **tutti** i bottoni del sito. Tutte le animazioni sono disattivate con `prefers-reduced-motion: reduce`.
+
+**Motivazione**: distinguibilità senza rinunciare alla sobrietà professionale (vincolo di progetto): niente illustrazioni stock, niente librerie di icone da 300KB — un linguaggio visivo piccolo, proprietario e manutenibile. Nota di manutenzione: le nuove classi colore introdotte (`bg-indigo-600/10`, `hover:shadow-lg`, gradiente) sono già coperte nel layer dark (D19).
+
 ## D15 — Contract Review Agent: estrazione nel browser, libreria clausole curata, RAG rimandato (7 lug 2026)
 
 **Decisione**: il modulo 5 (Contract Review Agent) parte con un **perimetro onesto**:

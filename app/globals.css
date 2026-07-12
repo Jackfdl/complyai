@@ -120,3 +120,59 @@
     color: #64748b;
   }
 }
+
+/* ============================================================
+   Identity & micro-interazioni (D20).
+   Animazioni brevi, GPU-friendly, disattivate se l'utente ha
+   ridotto il movimento nelle impostazioni di sistema.
+   ============================================================ */
+@media screen {
+  @keyframes cai-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-rise { animation: cai-rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .animate-rise-1 { animation-delay: 0.08s; }
+  .animate-rise-2 { animation-delay: 0.16s; }
+  .animate-rise-3 { animation-delay: 0.24s; }
+
+  /* Feedback tattile su ogni bottone del sito */
+  button:not(:disabled) { transition: transform 0.12s ease; }
+  button:not(:disabled):active { transform: scale(0.96); }
+
+  /* Trama a punti del hero (chiaro/scuro) */
+  .bg-dots {
+    background-image: radial-gradient(circle, rgba(100, 116, 139, 0.22) 1px, transparent 1.5px);
+    background-size: 22px 22px;
+  }
+  .dark .bg-dots {
+    background-image: radial-gradient(circle, rgba(148, 163, 184, 0.14) 1px, transparent 1.5px);
+  }
+
+  /* Gradiente del marchio sul wordmark */
+  .text-gradient-brand {
+    background-image: linear-gradient(90deg, #4f46e5, #0ea5e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .dark .text-gradient-brand {
+    background-image: linear-gradient(90deg, #818cf8, #38bdf8);
+  }
+
+  /* Ombra delle card leggibile anche su fondo scuro */
+  .dark .hover\:shadow-lg:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.55);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-rise-1,
+  .animate-rise-2,
+  .animate-rise-3 {
+    animation: none;
+  }
+  button:not(:disabled) {
+    transition: none;
+  }
+}
