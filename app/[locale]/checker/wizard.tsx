@@ -556,7 +556,8 @@ export default function CheckerWizard({ locale }: { locale: Locale }) {
           {result.deadlines.length > 0 && (
             <>
               <h3 className="mt-8 text-lg font-semibold text-slate-900">{ui.deadlinesTitle}</h3>
-              <table className="mt-3 w-full text-left text-sm">
+              <div className="mt-3 overflow-x-auto">
+              <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-300 text-xs uppercase tracking-wide text-slate-500">
                     <th className="py-2 pr-4">{ui.thWhen}</th>
@@ -589,6 +590,7 @@ export default function CheckerWizard({ locale }: { locale: Locale }) {
                   ))}
                 </tbody>
               </table>
+              </div>
               {!session && result.deadlines.some((d) => d.isoDate) && (
                 <p className="no-print mt-2 text-xs text-slate-400">{ui.deadlineToTrackerHint}</p>
               )}

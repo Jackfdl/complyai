@@ -114,6 +114,22 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 
 **Nota di manutenzione**: l'elenco alternative va riverificato periodicamente (nomi e URL possono cambiare); errori segnalati → correzione con menzione qui.
 
+## D18 — GDPR del prodotto: informativa chiara, cancellazione self-service, regione UE (8 lug 2026)
+
+**Decisione**: (1) informativa privacy bilingue in linguaggio chiaro su `/[locale]/privacy` (artt. 13–14 GDPR: titolare, dati minimi, responsabili Supabase/Vercel/Mistral, basi giuridiche, retention, diritti), linkata nel footer; (2) **cancellazione account self-service** (art. 17): API route con service role che traccia `account.deleted` e elimina l'utente — i dati cadono via ON DELETE CASCADE, il registro audit resta **pseudonimo** (l'UUID non è più riconducibile a una persona: equilibrio dichiarato tra diritto all'oblio e integrità del log); (3) funzioni Vercel spostate in **regione fra1 (Francoforte)** via `vercel.json`, così anche i testi inviati all'analisi AI transitano da server UE.
+
+**Dettaglio tecnico non ovvio**: il cascade della cancellazione gira senza JWT → `auth.uid()` è nullo → i trigger di audit violerebbero il NOT NULL bloccando la cancellazione. §11 di SETUP-SUPABASE li rende tolleranti con `coalesce(auth.uid(), new/old.user_id)`, mantenendo l'attribuzione corretta al proprietario dei dati.
+
+**Limiti dichiarati**: contatto del titolare via LinkedIn/GitHub (per una beta personale è adeguato; un indirizzo email dedicato è consigliato prima di uscire dalla beta); la CDN che serve gli asset statici resta globale (i dati applicativi stanno in UE).
+
+## D19 — Tema chiaro/scuro e accessibilità multi-dispositivo (9 lug 2026)
+
+**Decisione** (richiesta dell'utente): tema scuro attivabile con interruttore flottante presente su tutte le pagine (`app/theme-toggle.tsx`, montato dal layout root) e rispettoso della preferenza di sistema (`prefers-color-scheme`) quando l'utente non ha scelto; scelta persistita in `localStorage`; script inline no-FOUC come primo elemento del body (niente lampo bianco all'apertura serale). `color-scheme: dark` rende scuri anche i controlli nativi (date picker, select). La stampa resta sempre chiara (`@media screen` sul layer).
+
+**Scelta implementativa**: invece di aggiungere varianti `dark:` a centinaia di classi in ~11 pagine, un **layer CSS unico in `globals.css`** rimappa sotto `.dark` le utility effettivamente usate (palette censita con grep: slate/indigo + amber/red/emerald/sky). Un file solo, tutto il sito, zero regressioni sulle pagine. Costo accettato: è una traduzione di palette, non un sistema di design token — la migrazione a token semantici è rimandata a quando il design si stabilizza.
+
+**Responsive**: le pagine sono già mobile-first (grid `sm:`, `flex-wrap`, larghezze fluide); questo intervento aggiunge lo scroll orizzontale alla tabella delle scadenze del report Checker (4 colonne, unica tabella del sito) e verifica il resto. Il toggle è dimensionato per il tocco (44px).
+
 ## D15 — Contract Review Agent: estrazione nel browser, libreria clausole curata, RAG rimandato (7 lug 2026)
 
 **Decisione**: il modulo 5 (Contract Review Agent) parte con un **perimetro onesto**:

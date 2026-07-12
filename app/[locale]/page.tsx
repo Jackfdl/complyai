@@ -133,6 +133,12 @@ export default async function Home({
           >
             {t.footer.guardrailLink}
           </Link>
+          <Link
+            href={`/${locale}/privacy`}
+            className="font-medium text-indigo-600 hover:text-indigo-800"
+          >
+            {t.footer.privacyLink}
+          </Link>
         </p>
         <p className="mt-3">
           © {new Date().getFullYear()} ComplyAI — {t.footer.tagline}

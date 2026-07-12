@@ -402,6 +402,111 @@ create trigger reviews_audit_delete
 
 Il modulo usa le **stesse chiavi** del Checker (Supabase) e, per l'analisi AI opzionale, le stesse 3 variabili LLM del Mapper (§9). L'estrazione del testo dai file avviene **nel browser**: il contratto non viene inviato al server a meno che tu non attivi l'analisi AI da loggato. Le date estratte finiscono nello **Scadenzario** (Fase 2.2) con un click.
 
+## 11. Cancellazione account self-service (Fase 4.1) — SQL correttivo
+
+La cancellazione dell'account elimina i dati a cascata **senza** un utente autenticato: i trigger di audit, che usano `auth.uid()`, fallirebbero (NOT NULL) bloccando tutto. Questo blocco li rende tolleranti attribuendo l'azione al proprietario dei dati. Nel **SQL Editor** esegui:
+
+```sql
+-- ============================================================
+-- ComplyAI — Fase 4.1: trigger audit tolleranti al cascade
+-- (auth.uid() è nullo durante la cancellazione account)
+-- ============================================================
+
+create or replace function public.log_assessment_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'assessment.created', 'assessments', new.id::text,
+            jsonb_build_object('system_name', new.system_name, 'level', new.level));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'assessment.updated', 'assessments', new.id::text,
+            jsonb_build_object('system_name', old.system_name, 'level', old.level, 'updated_at', old.updated_at),
+            jsonb_build_object('system_name', new.system_name, 'level', new.level));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (coalesce(auth.uid(), old.user_id), 'assessment.deleted', 'assessments', old.id::text,
+            jsonb_build_object('system_name', old.system_name, 'level', old.level));
+    return old;
+  end if;
+end $$;
+
+create or replace function public.log_deadline_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'deadline.created', 'deadlines', new.id::text,
+            jsonb_build_object('title', new.title, 'due_date', new.due_date));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'deadline.updated', 'deadlines', new.id::text,
+            jsonb_build_object('title', old.title, 'due_date', old.due_date, 'completed_at', old.completed_at),
+            jsonb_build_object('title', new.title, 'due_date', new.due_date, 'completed_at', new.completed_at));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (coalesce(auth.uid(), old.user_id), 'deadline.deleted', 'deadlines', old.id::text,
+            jsonb_build_object('title', old.title, 'due_date', old.due_date));
+    return old;
+  end if;
+end $$;
+
+create or replace function public.log_matrix_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'matrix.created', 'control_matrices', new.id::text,
+            jsonb_build_object('title', new.title, 'rows', jsonb_array_length(new.rows)));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'matrix.updated', 'control_matrices', new.id::text,
+            jsonb_build_object('title', old.title, 'rows', jsonb_array_length(old.rows)),
+            jsonb_build_object('title', new.title, 'rows', jsonb_array_length(new.rows)));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (coalesce(auth.uid(), old.user_id), 'matrix.deleted', 'control_matrices', old.id::text,
+            jsonb_build_object('title', old.title));
+    return old;
+  end if;
+end $$;
+
+create or replace function public.log_review_change()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.audit_log (actor, action, entity, entity_id, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'contract_review.created', 'contract_reviews', new.id::text,
+            jsonb_build_object('title', new.title));
+    return new;
+  elsif tg_op = 'UPDATE' then
+    new.updated_at := now();
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state, new_state)
+    values (coalesce(auth.uid(), new.user_id), 'contract_review.updated', 'contract_reviews', new.id::text,
+            jsonb_build_object('title', old.title),
+            jsonb_build_object('title', new.title));
+    return new;
+  else
+    insert into public.audit_log (actor, action, entity, entity_id, prev_state)
+    values (coalesce(auth.uid(), old.user_id), 'contract_review.deleted', 'contract_reviews', old.id::text,
+            jsonb_build_object('title', old.title));
+    return old;
+  end if;
+end $$;
+```
+
+Nessuna variabile d'ambiente nuova (la cancellazione usa la `SUPABASE_SERVICE_ROLE_KEY` già configurata). Verifica: registrati con un account di prova → salva qualcosa → «Le mie valutazioni» → Zona pericolosa → elimina → in `audit_log` deve comparire `account.deleted` e le righe dei dati eliminati.
+
 ## Note operative
 
 - **Pausa da inattività**: il progetto Free si pausa dopo ~7 giorni senza attività DB; si riattiva dal dashboard in ~1 minuto (mitigazione strutturale in Fase 2.1 col Regulation Watcher).

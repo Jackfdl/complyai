@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Report del Checker: stampa pulita (Stampa / salva PDF) */
+/* Report del Checker: stampa pulita (Stampa / salva PDF) — sempre su fondo chiaro */
 @media print {
   .no-print {
     display: none !important;
@@ -10,5 +10,113 @@
   }
   #report {
     padding: 0;
+  }
+}
+
+/* ============================================================
+   Tema scuro (D19) — layer di rimappatura della palette.
+   Le pagine usano una palette disciplinata (slate/indigo + colori
+   semantici): qui ogni utility usata viene rimappata sotto `.dark`.
+   Solo a schermo: la stampa resta chiara. L'attivazione è in
+   app/theme-toggle.tsx (localStorage + prefers-color-scheme).
+   ============================================================ */
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark; /* form nativi (date picker, select) scuri */
+}
+
+@media screen {
+  /* --- Fondo e superfici --- */
+  .dark body { background-color: #020617; }
+  .dark .bg-white { background-color: #0f172a; }
+  .dark .bg-slate-50 { background-color: #1e293b; }
+  .dark .bg-slate-100 { background-color: #1e293b; }
+  .dark .open\:bg-slate-50[open] { background-color: #1e293b; }
+  /* pill attiva dello switch lingua: si inverte */
+  .dark .bg-slate-900 { background-color: #e2e8f0; color: #0f172a; }
+
+  /* --- Testi neutri --- */
+  .dark body { color: #e2e8f0; }
+  .dark .text-slate-900 { color: #f1f5f9; }
+  .dark .text-slate-700 { color: #e2e8f0; }
+  .dark .text-slate-600 { color: #cbd5e1; }
+  .dark .text-slate-500 { color: #94a3b8; }
+  .dark .text-slate-400 { color: #64748b; }
+  .dark .hover\:text-slate-900:hover { color: #f1f5f9; }
+
+  /* --- Bordi neutri --- */
+  .dark .border-slate-100 { border-color: #1e293b; }
+  .dark .border-slate-200 { border-color: #334155; }
+  .dark .border-slate-300 { border-color: #475569; }
+  .dark .hover\:border-slate-300:hover { border-color: #475569; }
+  .dark .hover\:border-slate-400:hover { border-color: #64748b; }
+
+  /* --- Indigo (accento) --- */
+  .dark .text-indigo-500 { color: #818cf8; }
+  .dark .text-indigo-600 { color: #818cf8; }
+  .dark .text-indigo-700 { color: #a5b4fc; }
+  .dark .hover\:text-indigo-700:hover { color: #a5b4fc; }
+  .dark .hover\:text-indigo-800:hover { color: #c7d2fe; }
+  .dark .hover\:text-indigo-900:hover { color: #e0e7ff; }
+  .dark .border-indigo-200 { border-color: #3730a3; }
+  .dark .border-indigo-300 { border-color: #4338ca; }
+  .dark .border-indigo-400 { border-color: #4f46e5; }
+  .dark .hover\:border-indigo-400:hover { border-color: #6366f1; }
+  .dark .bg-indigo-50\/50 { background-color: rgba(49, 46, 129, 0.45); }
+  .dark .bg-indigo-50\/60 { background-color: rgba(49, 46, 129, 0.45); }
+
+  /* --- Amber (attenzione) --- */
+  .dark .bg-amber-50 { background-color: rgba(69, 26, 3, 0.45); }
+  .dark .bg-amber-50\/50 { background-color: rgba(69, 26, 3, 0.45); }
+  .dark .border-amber-200 { border-color: #92400e; }
+  .dark .border-amber-300 { border-color: #b45309; }
+  .dark .text-amber-600 { color: #fbbf24; }
+  .dark .text-amber-700 { color: #fbbf24; }
+  .dark .text-amber-800 { color: #fcd34d; }
+  .dark .text-amber-900 { color: #fde68a; }
+
+  /* --- Red (rischio / zona pericolosa) --- */
+  .dark .bg-red-50 { background-color: rgba(69, 10, 10, 0.45); }
+  .dark .bg-red-50\/40 { background-color: rgba(69, 10, 10, 0.45); }
+  .dark .bg-red-50\/50 { background-color: rgba(69, 10, 10, 0.45); }
+  .dark .border-red-200 { border-color: #991b1b; }
+  .dark .border-red-300 { border-color: #b91c1c; }
+  .dark .hover\:border-red-300:hover { border-color: #dc2626; }
+  .dark .text-red-600 { color: #f87171; }
+  .dark .text-red-700 { color: #fca5a5; }
+  .dark .text-red-900 { color: #fecaca; }
+  .dark .hover\:text-red-600:hover { color: #f87171; }
+  .dark .hover\:text-red-900:hover { color: #fecaca; }
+
+  /* --- Emerald (ok / completato) --- */
+  .dark .bg-emerald-50 { background-color: rgba(2, 44, 34, 0.45); }
+  .dark .bg-emerald-50\/40 { background-color: rgba(2, 44, 34, 0.45); }
+  .dark .bg-emerald-50\/60 { background-color: rgba(2, 44, 34, 0.45); }
+  .dark .border-emerald-200 { border-color: #065f46; }
+  .dark .border-emerald-300 { border-color: #047857; }
+  .dark .border-emerald-400 { border-color: #059669; }
+  .dark .hover\:border-emerald-400:hover { border-color: #10b981; }
+  .dark .disabled\:border-emerald-300:disabled { border-color: #047857; }
+  .dark .text-emerald-700 { color: #6ee7b9; }
+  .dark .text-emerald-900 { color: #a7f3d0; }
+  .dark .hover\:text-emerald-700:hover { color: #6ee7b9; }
+  .dark .disabled\:text-emerald-700:disabled { color: #6ee7b9; }
+
+  /* --- Sky (trasparenza) --- */
+  .dark .bg-sky-50 { background-color: rgba(8, 47, 73, 0.45); }
+  .dark .border-sky-300 { border-color: #0369a1; }
+  .dark .text-sky-900 { color: #bae6fd; }
+
+  /* --- Campi modulo --- */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    background-color: #0f172a;
+    color: #f1f5f9;
+  }
+  .dark ::placeholder {
+    color: #64748b;
   }
 }

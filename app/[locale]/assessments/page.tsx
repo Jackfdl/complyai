@@ -67,6 +67,52 @@ export default function AssessmentsPage() {
     if (!error) void refresh();
   };
 
+  // Zona pericolosa: cancellazione account self-service (GDPR art. 17, D18).
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const dz =
+    locale === "it"
+      ? {
+          title: "Zona pericolosa",
+          body: "Elimina il tuo account e tutti i dati collegati (valutazioni, scadenze, matrici, memo). L'azione è immediata e irreversibile. Le voci del registro audit restano, in forma pseudonima, a garanzia di integrità.",
+          btn: "Elimina account e tutti i dati",
+          busy: "Eliminazione in corso…",
+          confirm1: "Eliminare DEFINITIVAMENTE l'account e tutti i dati? L'azione è irreversibile.",
+          confirm2: "Ultima conferma: i dati non saranno recuperabili. Procedere?",
+          err: "Cancellazione non riuscita:",
+        }
+      : {
+          title: "Danger zone",
+          body: "Delete your account and all linked data (assessments, deadlines, matrices, memos). The action is immediate and irreversible. Audit log entries remain, pseudonymised, as an integrity guarantee.",
+          btn: "Delete account and all data",
+          busy: "Deleting…",
+          confirm1: "PERMANENTLY delete the account and all data? This cannot be undone.",
+          confirm2: "Final confirmation: data will not be recoverable. Proceed?",
+          err: "Deletion failed:",
+        };
+
+  const deleteAccount = async () => {
+    if (!supabase || !session) return;
+    if (!window.confirm(dz.confirm1) || !window.confirm(dz.confirm2)) return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch("/api/account/delete", {
+        method: "POST",
+        headers: { authorization: `Bearer ${session.access_token}` },
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setDeleteError(`${dz.err} ${data.error ?? res.status}`);
+        return;
+      }
+      await supabase.auth.signOut();
+      router.push(`/${locale}`);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const dateLocale = locale === "it" ? "it-IT" : "en-GB";
   const fmt = (iso: string) => new Date(iso).toLocaleDateString(dateLocale);
 
@@ -146,6 +192,22 @@ export default function AssessmentsPage() {
           >
             {ui.dashNewAssessment}
           </Link>
+
+          {/* Zona pericolosa (GDPR art. 17) */}
+          <section className="mt-14 rounded-xl border border-red-200 bg-red-50/40 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-widest text-red-700">
+              {dz.title}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{dz.body}</p>
+            <button
+              onClick={() => void deleteAccount()}
+              disabled={deleting}
+              className="mt-4 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-600 hover:text-white disabled:opacity-50"
+            >
+              {deleting ? dz.busy : dz.btn}
+            </button>
+            {deleteError && <p className="mt-2 text-sm text-red-600">{deleteError}</p>}
+          </section>
         </>
       )}
     </main>

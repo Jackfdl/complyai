@@ -80,6 +80,8 @@ Design finale, gestione errori, documentazione utente, security & GDPR review de
 
 **Avviata l'8 lug 2026 — documentazione pubblica** ✅: pagina `/[locale]/about` bilingue con "come funziona" (principi di progettazione), FAQ (10 domande), sezione **alternative più complete** (fonti ufficiali UE, piattaforme enterprise, contract review pro — citate con onestà, senza affiliazione) e contatti per contribuire (LinkedIn + GitHub). Vedi D17.
 
+**4.1 — GDPR del prodotto** ✅ (8 lug 2026): informativa privacy bilingue `/[locale]/privacy` in linguaggio chiaro, **cancellazione account self-service** (danger zone in "Le mie valutazioni" + API con service role; audit pseudonimo post-cancellazione), funzioni Vercel in regione UE (fra1), trigger audit resi tolleranti al cascade (SQL §11). Vedi D18. Restano per Fase 4: email dedicata del titolare, security review finale, case study LinkedIn.
+
 ---
 
 ## Cosa devi fare tu — Fase 0 ✅ (tutto completato il 6 lug 2026)

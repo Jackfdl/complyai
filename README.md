@@ -18,7 +18,7 @@ Suite di strumenti AI per la compliance delle **PMI europee** — EU AI Act, con
 
 Roadmap completa: [`docs/PIANO-FASI.md`](docs/PIANO-FASI.md) · Decisioni tecniche: [`docs/DECISIONI.md`](docs/DECISIONI.md)
 
-**Documentazione pubblica** (come funziona, FAQ, alternative più complete): [`/it/about`](https://complyai-mu.vercel.app/it/about) · Contributi e segnalazioni: [LinkedIn — Giacomo Fedeli](https://www.linkedin.com/in/giacomo-fedeli-277765239/) o le issue di questo repo.
+**Documentazione pubblica** (come funziona, FAQ, alternative più complete): [`/it/about`](https://complyai-mu.vercel.app/it/about) · **Privacy** (GDPR, con cancellazione account self-service): [`/it/privacy`](https://complyai-mu.vercel.app/it/privacy) · Contributi e segnalazioni: [LinkedIn — Giacomo Fedeli](https://www.linkedin.com/in/giacomo-fedeli-277765239/) o le issue di questo repo.
 
 ## Stack
 
