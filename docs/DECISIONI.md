@@ -136,6 +136,14 @@ Il piano assume le scadenze modificate dall'Omnibus digitale (Annex III → 2 di
 
 **Motivazione**: distinguibilità senza rinunciare alla sobrietà professionale (vincolo di progetto): niente illustrazioni stock, niente librerie di icone da 300KB — un linguaggio visivo piccolo, proprietario e manutenibile. Nota di manutenzione: le nuove classi colore introdotte (`bg-indigo-600/10`, `hover:shadow-lg`, gradiente) sono già coperte nel layer dark (D19).
 
+## D21 — RAG sulla libreria clausole: pgvector + mistral-embed (10 lug 2026)
+
+**Decisione**: mantenuta la promessa di D15 — confronto **semantico** delle clausole trovate con una libreria di riferimento curata (`lib/contracts/snippets.ts`, ~23 formulazioni IT tipiche, etichettate `standard` o `risky`, versionate). Embeddings con **mistral-embed** (stesso account/free tier di D14, nessuna env nuova), archiviati in Supabase con **pgvector** (`clause_snippets`, lettura pubblica: è la nostra libreria, non dati utente); ricerca con RPC `match_clause_snippets` (similarità coseno). Seeding via endpoint protetto da CRON_SECRET, da rilanciare a ogni versione degli snippet (§12).
+
+**Regole (pure e testate in `rag.ts`)**: riferimento mostrato solo sopra soglia 0.78; un match `risky` ≥ 0.84 **alza** una clausola informativa a "da verificare"; il RAG **non abbassa mai** un livello (aggiunge prudenza, non ne toglie). Max 12 clausole confrontate per analisi (rispetto della quota); nel memo il confronto è dichiarato "beta, fa fede il contratto". Degradazione totale: senza embeddings/tabella l'analisi resta identica.
+
+**Limiti dichiarati**: libreria v1 solo italiana e volutamente piccola (qualità > quantità: ogni snippet è curato a mano); il confronto è per-clausola, non sull'intero documento; le soglie andranno ricalibrate con feedback reale.
+
 ## D15 — Contract Review Agent: estrazione nel browser, libreria clausole curata, RAG rimandato (7 lug 2026)
 
 **Decisione**: il modulo 5 (Contract Review Agent) parte con un **perimetro onesto**:

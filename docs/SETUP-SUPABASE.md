@@ -507,6 +507,60 @@ end $$;
 
 Nessuna variabile d'ambiente nuova (la cancellazione usa la `SUPABASE_SERVICE_ROLE_KEY` già configurata). Verifica: registrati con un account di prova → salva qualcosa → «Le mie valutazioni» → Zona pericolosa → elimina → in `audit_log` deve comparire `account.deleted` e le righe dei dati eliminati.
 
+## 12. RAG libreria clausole (Fase 3) — pgvector + seeding
+
+### SQL
+
+Nel **SQL Editor** esegui:
+
+```sql
+-- ============================================================
+-- ComplyAI — Fase 3: confronto semantico clausole (pgvector)
+-- ============================================================
+
+create extension if not exists vector;
+
+create table public.clause_snippets (
+  id text primary key,
+  category text not null,
+  kind text not null check (kind in ('standard','risky')),
+  lang text not null default 'it',
+  text text not null,
+  embedding vector(1024) not null,
+  version text,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.clause_snippets enable row level security;
+-- Lettura pubblica (è la NOSTRA libreria di riferimento, non dati utente);
+-- scrittura solo via service role (endpoint di seeding).
+create policy "public read snippets" on public.clause_snippets
+  for select using (true);
+
+create or replace function public.match_clause_snippets(
+  query_embedding vector(1024),
+  match_count int default 1
+)
+returns table (id text, category text, kind text, text text, similarity float)
+language sql stable as $$
+  select s.id, s.category, s.kind, s.text,
+         1 - (s.embedding <=> query_embedding) as similarity
+  from public.clause_snippets s
+  order by s.embedding <=> query_embedding
+  limit match_count;
+$$;
+```
+
+### Seeding (una volta, e a ogni aggiornamento di `lib/contracts/snippets.ts`)
+
+Dopo il deploy, da PowerShell (usa il TUO CRON_SECRET):
+
+```powershell
+curl.exe -X POST -H "Authorization: Bearer IL-TUO-CRON-SECRET" https://complyai-mu.vercel.app/api/contracts/seed-snippets
+```
+
+Risposta attesa: `{"ok":true,"seeded":23,...}`. Gli embedding sono calcolati con `mistral-embed` (stesso account Mistral, nessuna variabile nuova; opzionale `EMBED_MODEL` per cambiarlo). Verifica: Table Editor → `clause_snippets` popolata; poi un'analisi contratto da loggato mostra i confronti "≈ formulazione standard/rischiosa".
+
 ## Note operative
 
 - **Pausa da inattività**: il progetto Free si pausa dopo ~7 giorni senza attività DB; si riattiva dal dashboard in ~1 minuto (mitigazione strutturale in Fase 2.1 col Regulation Watcher).

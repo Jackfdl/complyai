@@ -2,6 +2,15 @@
 
 export type ClauseAssessment = "info" | "warning" | "risk";
 
+/** Esito del confronto semantico con la libreria di riferimento (RAG, D21). */
+export interface ClauseReference {
+  kind: "standard" | "risky";
+  /** Testo della formulazione di riferimento più simile. */
+  text: string;
+  /** Similarità coseno 0–1. */
+  similarity: number;
+}
+
 export interface FoundClause {
   category: string;
   label: string;
@@ -9,6 +18,7 @@ export interface FoundClause {
   excerpt: string;
   comment: string;
   occurrences?: number;
+  reference?: ClauseReference;
 }
 
 export interface MissingProtection {
@@ -33,4 +43,6 @@ export interface ContractAnalysis {
   summary: string;
   libraryVersion: string;
   warning?: string;
+  /** true se il confronto semantico con la libreria è stato eseguito. */
+  ragUsed?: boolean;
 }

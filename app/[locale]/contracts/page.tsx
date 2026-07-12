@@ -303,6 +303,9 @@ export default function ContractsPage() {
           <h2 className="mt-8 mb-3 text-sm font-medium uppercase tracking-widest text-slate-500">
             {ui.clausesTitle} ({analysis.clauses.length})
           </h2>
+          {analysis.ragUsed && (
+            <p className="-mt-1 mb-3 text-xs text-slate-400">{ui.refHint}</p>
+          )}
           {analysis.clauses.length === 0 ? (
             <p className="text-sm text-amber-700">{ui.noClauses}</p>
           ) : (
@@ -327,6 +330,29 @@ export default function ContractsPage() {
                     “{c.excerpt}”
                   </p>
                   {c.comment && <p className="mt-2 text-sm text-slate-700">{c.comment}</p>}
+                  {c.reference && (
+                    <div
+                      className={`mt-3 rounded-lg border p-3 ${
+                        c.reference.kind === "risky"
+                          ? "border-red-200 bg-red-50/40"
+                          : "border-emerald-200 bg-emerald-50/40"
+                      }`}
+                    >
+                      <p
+                        className={`text-xs font-semibold uppercase tracking-wide ${
+                          c.reference.kind === "risky" ? "text-red-700" : "text-emerald-700"
+                        }`}
+                      >
+                        {c.reference.kind === "risky" ? ui.refRisky : ui.refStandard}
+                        <span className="ml-2 font-normal normal-case text-slate-500">
+                          {ui.refSimilarity} {(c.reference.similarity * 100).toFixed(0)}%
+                        </span>
+                      </p>
+                      <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                        “{c.reference.text}”
+                      </p>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
